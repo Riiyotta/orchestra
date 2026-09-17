@@ -1,0 +1,224 @@
+{
+  "$comment": "Template composition + shared-vs-local verdict. DERIVED from ia.json — do not hand-edit; run node design-repo/schema/sync.mjs",
+  "meta": {
+    "derivedFrom": "ia.json",
+    "sharedSections": 3,
+    "pageLocalSections": 21
+  },
+  "shared": {
+    "chrome.navbar": [
+      "template.home",
+      "template.product-detail",
+      "template.about",
+      "template.contact",
+      "template.blog-index",
+      "template.blog-post",
+      "template.not-found"
+    ],
+    "conversion.cta-band": [
+      "template.home",
+      "template.product-detail",
+      "template.about",
+      "template.contact",
+      "template.blog-index",
+      "template.blog-post",
+      "template.not-found"
+    ],
+    "chrome.footer": [
+      "template.home",
+      "template.product-detail",
+      "template.about",
+      "template.contact",
+      "template.blog-index",
+      "template.blog-post",
+      "template.not-found"
+    ]
+  },
+  "pageLocal": {
+    "hero.home": [
+      "template.home"
+    ],
+    "showcase.hero-timeline": [
+      "template.home"
+    ],
+    "showcase.product-frame": [
+      "template.home"
+    ],
+    "narrative.pillar-accordion": [
+      "template.home"
+    ],
+    "showcase.system-video": [
+      "template.home"
+    ],
+    "collection.home-updates": [
+      "template.home"
+    ],
+    "hero.product": [
+      "template.product-detail"
+    ],
+    "narrative.product-feature": [
+      "template.product-detail"
+    ],
+    "hero.about": [
+      "template.about"
+    ],
+    "narrative.approach": [
+      "template.about"
+    ],
+    "narrative.intelligence-arc": [
+      "template.about"
+    ],
+    "narrative.team": [
+      "template.about"
+    ],
+    "conversion.hiring": [
+      "template.about"
+    ],
+    "hero.contact": [
+      "template.contact"
+    ],
+    "conversion.contact-form": [
+      "template.contact"
+    ],
+    "hero.blog-featured": [
+      "template.blog-index"
+    ],
+    "collection.post-grid": [
+      "template.blog-index"
+    ],
+    "hero.post": [
+      "template.blog-post"
+    ],
+    "narrative.article-body": [
+      "template.blog-post"
+    ],
+    "collection.related-posts": [
+      "template.blog-post"
+    ],
+    "hero.not-found": [
+      "template.not-found"
+    ]
+  },
+  "templates": {
+    "template.home": {
+      "name": "Home",
+      "routes": [
+        "/"
+      ],
+      "routePattern": null,
+      "sectionCount": 9,
+      "sections": [
+        "chrome.navbar",
+        "hero.home",
+        "showcase.hero-timeline",
+        "showcase.product-frame",
+        "narrative.pillar-accordion",
+        "showcase.system-video",
+        "collection.home-updates",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.product-detail": {
+      "name": "Product detail",
+      "routes": [
+        "/product/unified-planning",
+        "/product/intelligent-operations",
+        "/product/decision-support"
+      ],
+      "routePattern": "/product/{slug}",
+      "sectionCount": 5,
+      "sections": [
+        "chrome.navbar",
+        "hero.product",
+        "narrative.product-feature",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.about": {
+      "name": "About",
+      "routes": [
+        "/about"
+      ],
+      "routePattern": null,
+      "sectionCount": 8,
+      "sections": [
+        "chrome.navbar",
+        "hero.about",
+        "narrative.approach",
+        "narrative.intelligence-arc",
+        "narrative.team",
+        "conversion.hiring",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.contact": {
+      "name": "Contact",
+      "routes": [
+        "/contact"
+      ],
+      "routePattern": null,
+      "sectionCount": 5,
+      "sections": [
+        "chrome.navbar",
+        "hero.contact",
+        "conversion.contact-form",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.blog-index": {
+      "name": "Blog index",
+      "routes": [
+        "/blog"
+      ],
+      "routePattern": null,
+      "sectionCount": 5,
+      "sections": [
+        "chrome.navbar",
+        "hero.blog-featured",
+        "collection.post-grid",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.blog-post": {
+      "name": "Blog post",
+      "routes": [
+        "/blog/how-biotechs-can-manage-cros-with-agents",
+        "/blog/agents-for-r-d-science",
+        "/blog/agents-for-r-d-strategy",
+        "/blog/from-paper-to-cloud-to-agents",
+        "/blog/ashoka-interview-biotechtv",
+        "/blog/full-interview-janelle-muranaka",
+        "/blog/operational-framework-janelle-muranaka"
+      ],
+      "routePattern": "/blog/{slug}",
+      "sectionCount": 6,
+      "sections": [
+        "chrome.navbar",
+        "hero.post",
+        "narrative.article-body",
+        "collection.related-posts",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    "template.not-found": {
+      "name": "Not found",
+      "routes": [
+        "*"
+      ],
+      "routePattern": null,
+      "sectionCount": 4,
+      "sections": [
+        "chrome.navbar",
+        "hero.not-found",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    }
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "$comment": "Section inventory. DERIVED from ia.json — do not hand-edit; run node design-repo/schema/sync.mjs",
+  "meta": {
+    "derivedFrom": "ia.json",
+    "totalSections": 24,
+    "totalTemplates": 7,
+    "totalRoutes": 15
+  },
+  "categories": {
+    "CHROME": "Layout-level furniture rendered by App.jsx for every route, outside the page component.",
+    "HERO": "The page-opening block that establishes what the route is about.",
+    "SHOWCASE": "Product imagery and motion: screenshots, video, and the animated timeline strip.",
+    "NARRATIVE": "Sequential explanatory blocks that carry a page's argument.",
+    "COLLECTION": "Blocks that list other routes — post grids, related links.",
+    "CONVERSION": "Blocks whose job is to get the visitor to act."
+  },
+  "sections": {
+    "chrome.navbar": {
+      "category": "CHROME",
+      "description": "Fixed 88px ink bar: wordmark, Product/Company/Blog links with carets on the first two, Login, and a Contact pill. The item matching the current route gets a solid pill behind it.",
+      "scope": "Rendered by the shared Layout on all 15 routes, including the catch-all.",
+      "implementedBy": "src/components/Navbar.jsx",
+      "surface": "ink"
+    },
+    "chrome.footer": {
+      "category": "CHROME",
+      "description": "Ink footer below the CTA: wordmark, mission line, mail link, Company and Product link columns, copyright row and social marks.",
+      "scope": "Rendered by the shared Layout on all 15 routes, including the catch-all.",
+      "implementedBy": "src/components/Footer.jsx",
+      "surface": "ink"
+    },
+    "conversion.cta-band": {
+      "category": "CONVERSION",
+      "description": "\"Get started today\" band: mono eyebrow, 76px headline, subhead and a mint Book a demo pill, over a full-bleed photo layer.",
+      "scope": "Rendered once, as the first child of Footer, so it reaches all 15 routes. Page components must not render it themselves.",
+      "implementedBy": "src/components/CTA.jsx",
+      "surface": "inherit"
+    },
+    "hero.home": {
+      "category": "HERO",
+      "description": "Centred ink hero: 76px two-line headline, single-line subhead and a light Book a demo pill.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/Hero.jsx",
+      "surface": "ink"
+    },
+    "hero.product": {
+      "category": "HERO",
+      "description": "Left-aligned ink hero carrying the product's eyebrow, 56px title, subhead and a light Book a demo pill.",
+      "scope": "All 3 product detail routes.",
+      "implementedBy": "src/pages/Product.jsx",
+      "surface": "ink"
+    },
+    "hero.about": {
+      "category": "HERO",
+      "description": "Centred ink hero with an About eyebrow and a 64px mission statement, no call to action.",
+      "scope": "The about route only.",
+      "implementedBy": "src/pages/About.jsx",
+      "surface": "ink"
+    },
+    "hero.contact": {
+      "category": "HERO",
+      "description": "Paper band pairing a 40px \"Get in Touch\" heading and intro line with a full-height image on the right.",
+      "scope": "The contact route only.",
+      "implementedBy": "src/pages/Contact.jsx",
+      "surface": "paper"
+    },
+    "hero.blog-featured": {
+      "category": "HERO",
+      "description": "Ink band promoting one post: cover image beside its title, excerpt and a Learn more link.",
+      "scope": "The blog index route only.",
+      "implementedBy": "src/pages/BlogIndex.jsx",
+      "surface": "ink"
+    },
+    "hero.post": {
+      "category": "HERO",
+      "description": "Centred paper header: read-time line, article title, optional excerpt, then a full-width cover image.",
+      "scope": "All 7 blog post routes.",
+      "implementedBy": "src/pages/BlogPost.jsx",
+      "surface": "paper"
+    },
+    "hero.not-found": {
+      "category": "HERO",
+      "description": "Ink 404 block: numeric eyebrow, apology headline and a link back to the home route.",
+      "scope": "The catch-all route only.",
+      "implementedBy": "src/pages/NotFound.jsx",
+      "surface": "ink"
+    },
+    "showcase.hero-timeline": {
+      "category": "SHOWCASE",
+      "description": "Animated 75px strip under the home hero: a looping horizontal track of lane-positioned pills, ring markers and labelled status chips.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/HeroTimeline.jsx",
+      "surface": "inherit"
+    },
+    "showcase.product-frame": {
+      "category": "SHOWCASE",
+      "description": "Full-bleed product screenshot with the interface video playing inset inside its frame, gated to play only while on screen.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/Showcase.jsx",
+      "surface": "inherit"
+    },
+    "showcase.system-video": {
+      "category": "SHOWCASE",
+      "description": "Paper band with a 48px heading above a full-bleed looping video of the management system.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/SystemBand.jsx",
+      "surface": "paper"
+    },
+    "narrative.pillar-accordion": {
+      "category": "NARRATIVE",
+      "description": "Fixed-height clipped band: a numbered pill menu, a 56px heading, and an auto-advancing two-item accordion whose active tab cross-fades the screenshot stack on the right.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/Pillars.jsx",
+      "surface": "inherit"
+    },
+    "narrative.product-feature": {
+      "category": "NARRATIVE",
+      "description": "Repeating paper band pairing a numbered chip, 48px heading and body copy with a screenshot; each product route renders three.",
+      "scope": "All 3 product detail routes.",
+      "implementedBy": "src/pages/Product.jsx",
+      "surface": "paper"
+    },
+    "narrative.approach": {
+      "category": "NARRATIVE",
+      "description": "Two-column paper band stating the company's approach as a heading and a single paragraph.",
+      "scope": "The about route only.",
+      "implementedBy": "src/pages/About.jsx",
+      "surface": "paper"
+    },
+    "narrative.intelligence-arc": {
+      "category": "NARRATIVE",
+      "description": "Lead-in line followed by three numbered columns naming the stages of the product's intelligence arc.",
+      "scope": "The about route only.",
+      "implementedBy": "src/pages/About.jsx",
+      "surface": "inherit"
+    },
+    "narrative.team": {
+      "category": "NARRATIVE",
+      "description": "Ink band of member pairs, each a portrait butted against a details panel carrying name, role and a LinkedIn link, followed by a full-width group photograph.",
+      "scope": "The about route only.",
+      "implementedBy": "src/pages/About.jsx",
+      "surface": "ink"
+    },
+    "narrative.article-body": {
+      "category": "NARRATIVE",
+      "description": "The article itself at an 800px measure, rendered from typed blocks: paragraph, heading, pull quote and captioned figure.",
+      "scope": "All 7 blog post routes. Bodies are empty stubs, so this currently renders a placeholder.",
+      "implementedBy": "src/pages/BlogPost.jsx",
+      "surface": "inherit"
+    },
+    "collection.post-grid": {
+      "category": "COLLECTION",
+      "description": "Paper band listing every post except the featured one as a three-column grid of cover, title and Learn more link.",
+      "scope": "The blog index route only.",
+      "implementedBy": "src/pages/BlogIndex.jsx",
+      "surface": "paper"
+    },
+    "collection.related-posts": {
+      "category": "COLLECTION",
+      "description": "Two-column paper band offering two other posts at the foot of an article.",
+      "scope": "All 7 blog post routes.",
+      "implementedBy": "src/pages/BlogPost.jsx",
+      "surface": "paper"
+    },
+    "collection.home-updates": {
+      "category": "COLLECTION",
+      "description": "Ink \"Latest updates\" band showing three recent posts as cover-and-title cards.",
+      "scope": "The home route only.",
+      "implementedBy": "src/components/Updates.jsx",
+      "surface": "ink"
+    },
+    "conversion.contact-form": {
+      "category": "CONVERSION",
+      "description": "Four-field enquiry form — name, email, phone, free-text challenges — with a mint submit pill; posts nowhere and confirms in local state.",
+      "scope": "The contact route only.",
+      "implementedBy": "src/pages/Contact.jsx",
+      "surface": "inherit"
+    },
+    "conversion.hiring": {
+      "category": "CONVERSION",
+      "description": "Paper band pairing a \"We're hiring!\" heading with two paragraphs and a button out to the external Ashby job board.",
+      "scope": "The about route only.",
+      "implementedBy": "src/pages/About.jsx",
+      "surface": "paper"
+    }
+  },
+  "templates": [
+    {
+      "id": "template.home",
+      "name": "Home",
+      "routeCount": 1,
+      "routePattern": null,
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.home",
+        "showcase.hero-timeline",
+        "showcase.product-frame",
+        "narrative.pillar-accordion",
+        "showcase.system-video",
+        "collection.home-updates",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.product-detail",
+      "name": "Product detail",
+      "routeCount": 3,
+      "routePattern": "/product/{slug}",
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.product",
+        "narrative.product-feature",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.about",
+      "name": "About",
+      "routeCount": 1,
+      "routePattern": null,
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.about",
+        "narrative.approach",
+        "narrative.intelligence-arc",
+        "narrative.team",
+        "conversion.hiring",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.contact",
+      "name": "Contact",
+      "routeCount": 1,
+      "routePattern": null,
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.contact",
+        "conversion.contact-form",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.blog-index",
+      "name": "Blog index",
+      "routeCount": 1,
+      "routePattern": null,
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.blog-featured",
+        "collection.post-grid",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.blog-post",
+      "name": "Blog post",
+      "routeCount": 7,
+      "routePattern": "/blog/{slug}",
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.post",
+        "narrative.article-body",
+        "collection.related-posts",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    },
+    {
+      "id": "template.not-found",
+      "name": "Not found",
+      "routeCount": 1,
+      "routePattern": null,
+      "chrome": "full",
+      "sections": [
+        "chrome.navbar",
+        "hero.not-found",
+        "conversion.cta-band",
+        "chrome.footer"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "$comment": "Shared React components: reusable units above primitive level that carry their own structure. Section-level blocks live in sections/ and point at the same files where a component IS a section (e.g. CTA, Hero).",
+  "meta": { "source": "src/components/*.jsx", "status": "verified-against-source" },
+
+  "components": {
+    "Arrow": {
+      "file": "src/components/Arrow.jsx",
+      "lines": 20,
+      "kind": "primitive-atom",
+      "props": [],
+      "description": "11x8 trailing chevron used by both pill CTAs.",
+      "consumedBy": ["CTA", "Hero", "pages/Product"],
+      "note": "Presentational only; aria-hidden. The label lives in the button text."
+    },
+    "Navbar": {
+      "file": "src/components/Navbar.jsx",
+      "lines": 94,
+      "kind": "chrome",
+      "section": "chrome.navbar",
+      "description": "Fixed 88px ink bar: wordmark, Product/Company/Blog links with carets on the first two, Login, Contact pill. Active route gets a solid pill behind it.",
+      "renderedBy": "App.jsx Layout — on all 15 routes."
+    },
+    "Footer": {
+      "file": "src/components/Footer.jsx",
+      "lines": 140,
+      "kind": "chrome",
+      "section": "chrome.footer",
+      "description": "Ink footer: wordmark, mission line, mail link, Company/Product columns, copyright row, social marks.",
+      "renderedBy": "App.jsx Layout — on all 15 routes.",
+      "contract": "Renders <CTA /> as its FIRST CHILD. Page components must never render CTA themselves."
+    },
+    "CTA": {
+      "file": "src/components/CTA.jsx",
+      "lines": 40,
+      "kind": "section-component",
+      "section": "conversion.cta-band",
+      "description": "'Get started today' band over a full-bleed photo layer.",
+      "height": "md:h-[521.47px]",
+      "typeScale": "mint-soft eyebrow / cream display-hero H2 / mint-pale body-md subhead",
+      "rationale": "On the original this is the first child of <footer>, not a section in <main> — it sits on the footer's ink background and its type is light-on-dark, the inverse of a standalone light band.",
+      "reachedBy": "All 15 routes, via Footer."
+    },
+    "Hero": {
+      "file": "src/components/Hero.jsx",
+      "lines": 28,
+      "kind": "section-component",
+      "section": "hero.home",
+      "description": "Centred ink hero: two-line 76px headline, subhead, light Book a demo pill.",
+      "measure": "700px (NOT 760) — H1 and subhead share the column x290..990 at 1280.",
+      "scope": "Home route only."
+    },
+    "HeroTimeline": {
+      "file": "src/components/HeroTimeline.jsx",
+      "lines": 548,
+      "kind": "section-component",
+      "section": "showcase.hero-timeline",
+      "description": "Animated 75px strip: looping horizontal track of lane-positioned pills, ring markers, labelled status chips.",
+      "usesPrimitives": ["marquee-track"],
+      "scope": "Home route only.",
+      "note": "Largest component in the repo at 548 lines — the main candidate for decomposition if it is ever touched again."
+    },
+    "Showcase": {
+      "file": "src/components/Showcase.jsx",
+      "lines": 70,
+      "kind": "section-component",
+      "section": "showcase.product-frame",
+      "description": "Full-bleed product screenshot with the interface video inset in its frame, gated to play only while on screen.",
+      "exports": ["default Showcase", "useViewportVideo"],
+      "contract": "useViewportVideo(autoplay) is the shared hook for viewport-gated video; SystemBand imports it from here.",
+      "scope": "Home route only."
+    },
+    "SystemBand": {
+      "file": "src/components/SystemBand.jsx",
+      "lines": 43,
+      "kind": "section-component",
+      "section": "showcase.system-video",
+      "description": "Paper band: 48px heading above a full-bleed looping video of the management system.",
+      "geometry": "Section y=2443 h=772: 136px lead-in, h2 104px, 32px gap, 500px video. Video is full-bleed x=0 w=1280, outside the gutter.",
+      "rationale": "Heading box is pinned to h-[104px] and widened to 760px: the original is 600x104 in Greed Standard, but the substitute display face is wider and wraps to three lines at 600px, which would grow the band 52px and push the video off its measured y=2715.",
+      "scope": "Home route only."
+    },
+    "Pillars": {
+      "file": "src/components/Pillars.jsx",
+      "lines": 237,
+      "kind": "section-component",
+      "section": "narrative.pillar-accordion",
+      "description": "Fixed-height clipped band: numbered pill menu, 56px heading, auto-advancing two-item accordion whose active tab cross-fades the screenshot stack.",
+      "scope": "Home route only."
+    },
+    "Updates": {
+      "file": "src/components/Updates.jsx",
+      "lines": 55,
+      "kind": "section-component",
+      "section": "collection.home-updates",
+      "description": "Ink 'Latest updates' band: three recent posts as cover-and-title cards.",
+      "note": "Heading is mint-soft on the original, not cream. Card title sits in its own 20px/8px padded block, inset 8px from the image edge.",
+      "scope": "Home route only.",
+      "knownIssue": "DRIFT-01 — holds its own hardcoded POSTS array instead of importing from src/content/posts.js. See validate.mjs."
+    }
+  },
+
+  "contentSources": {
+    "src/content/posts.js":    { "exports": "POSTS", "count": 7, "consumedBy": ["pages/BlogIndex", "pages/BlogPost"], "note": "Article bodies are intentionally empty stubs." },
+    "src/content/products.js": { "exports": "PRODUCTS", "count": 3, "consumedBy": ["pages/Product"], "shape": "keyed by slug: { eyebrow, title, subhead, features[3] }" },
+    "src/content/team.js":     { "exports": "TEAM", "consumedBy": ["pages/About"] }
+  }
+}

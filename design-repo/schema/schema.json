@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "orchestra design-repo",
+  "description": "Shape contract for the design-repo files. The validator (design-repo/schema/validate-design-repo.mjs) checks these shapes AND cross-file referential integrity, which a pure JSON Schema cannot express.",
+  "definitions": {
+    "token": {
+      "type": "object",
+      "required": ["value"],
+      "properties": { "value": {}, "role": { "type": "string" }, "note": { "type": "string" } }
+    },
+    "typeStep": {
+      "type": "object",
+      "required": ["size", "lineHeight"],
+      "properties": {
+        "size": { "type": "string", "pattern": "^[0-9.]+px$" },
+        "lineHeight": { "type": "string" },
+        "letterSpacing": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "primitive": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["layout", "typography", "action", "icon", "motion"] },
+        "css": { "type": "string" },
+        "usage": { "type": "string" },
+        "rationale": { "type": "string" },
+        "extends": { "type": "string" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["file", "kind", "description"],
+      "properties": {
+        "file": { "type": "string", "pattern": "^src/" },
+        "kind": { "enum": ["primitive-atom", "chrome", "section-component"] },
+        "section": { "type": "string", "description": "Must resolve to a key in sections.json when present." },
+        "description": { "type": "string" },
+        "knownIssue": { "type": "string" }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["category", "description", "scope", "implementedBy"],
+      "properties": {
+        "category": { "enum": ["CHROME", "HERO", "SHOWCASE", "NARRATIVE", "COLLECTION", "CONVERSION"] },
+        "implementedBy": { "type": "string", "pattern": "^src/" },
+        "surface": { "enum": ["ink", "paper", "inherit"] }
+      }
+    }
+  },
+  "invariants": [
+    "Every components[*].section resolves to a key in sections.json.",
+    "Every sections[*].implementedBy points at a file that exists on disk.",
+    "Every templates[*].sections[*] resolves to a key in sections.json.",
+    "Every color referenced by a primitive's CSS exists in tokens.json.",
+    "sections.json and templates.json stay in sync with the root ia.json (they are derived from it).",
+    "conversion.cta-band is rendered only by Footer, never by a page component."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$comment": "The atomic, reusable classes defined in src/index.css @layer components/utilities, plus the one shared React atom (Arrow). A primitive is something with no content of its own; anything that knows what it says is a component or a section.",
+  "meta": { "source": "src/index.css, src/components/Arrow.jsx", "status": "verified-against-source" },
+
+  "primitives": {
+    "shell": {
+      "kind": "layout",
+      "definedIn": "src/index.css",
+      "css": ".shell { @apply mx-auto w-full px-5 md:px-8; max-width: calc(1216px + 64px); }",
+      "usage": "Wraps the content column of nearly every section. Full-bleed sections (SystemBand video, CTA photo) deliberately sit outside it.",
+      "rationale": "Content must run 32..1248 at 1280 (1216 wide). max-w-[1216px]+px-8 would give 1152 wide, 32px off-axis."
+    },
+    "display-hero": {
+      "kind": "typography",
+      "definedIn": "src/index.css",
+      "css": ".display-hero { @apply text-display-md md:text-display-xl; }",
+      "usage": "Hero and CTA headlines.",
+      "rationale": "76px drops to the 48px step below md on the original — a hard swap, NOT fluid type. Do not replace with clamp()."
+    },
+    "eyebrow": {
+      "kind": "typography",
+      "definedIn": "src/index.css",
+      "css": ".eyebrow { @apply font-mono text-eyebrow font-medium uppercase; }",
+      "usage": "Small mono kicker above a heading."
+    },
+    "eyebrow-tight": {
+      "kind": "typography",
+      "definedIn": "src/index.css",
+      "css": ".eyebrow-tight { @apply eyebrow; letter-spacing: normal; }",
+      "usage": "Footer headings and the CTA eyebrow.",
+      "rationale": "Only the copyright line carries tracking; these measure letter-spacing:normal on the original."
+    },
+    "btn": {
+      "kind": "action",
+      "definedIn": "src/index.css",
+      "css": ".btn { @apply inline-flex items-center justify-center whitespace-nowrap rounded-full font-display transition-all duration-150 ease-out active:scale-[0.98]; }",
+      "usage": "Base for all pill actions; never used bare.",
+      "variants": ["btn-light", "btn-mint", "btn-ghost"]
+    },
+    "btn-light": {
+      "kind": "action",
+      "extends": "btn",
+      "css": ".btn-light { @apply btn h-10 gap-1.5 bg-cream pl-5 pr-4 text-[16px] leading-6 text-ink hover:bg-white; letter-spacing: normal; }",
+      "usage": "Primary CTA on ink surfaces (home hero, product hero).",
+      "rationale": "h40 with asymmetric padding (20 lead / 16 trail) because the trailing arrow carries its own 6px right padding. 16/24 at letter-spacing normal, NOT -0.16."
+    },
+    "btn-mint": {
+      "kind": "action",
+      "extends": "btn",
+      "css": ".btn-mint { @apply btn h-10 gap-1.5 bg-mint pl-5 pr-4 text-[16px] leading-6 text-ink hover:brightness-105; letter-spacing: normal; }",
+      "usage": "Primary CTA in the conversion band and the contact form submit."
+    },
+    "btn-ghost": {
+      "kind": "action",
+      "extends": "btn",
+      "css": ".btn-ghost { @apply btn border border-white/25 px-5 py-2.5 text-label text-cream hover:border-white/50 hover:bg-white/5; }",
+      "usage": "Secondary action on ink."
+    },
+    "btn-arrow": {
+      "kind": "icon",
+      "definedIn": "src/index.css + src/components/Arrow.jsx",
+      "css": ".btn-arrow { @apply inline-block h-2 w-[11px] shrink-0; margin-left: -1.5px; margin-right: -1.5px; }",
+      "component": "src/components/Arrow.jsx",
+      "geometry": "11x8 chevron, viewBox 0 0 11 8, stroke currentColor 1.2, round caps/joins",
+      "rationale": "The arrow occupies a 16px box with 6px trailing padding, adding 22px total — not 11px plus the flex gap, which overshot the pill by 8px. The negative margins are load-bearing."
+    },
+    "marquee-track": {
+      "kind": "motion",
+      "definedIn": "src/index.css",
+      "css": ".marquee-track { display:flex; width:max-content; animation: marquee 40s linear infinite; } .marquee-track:hover { animation-play-state: paused; }",
+      "usage": "Horizontal looping strip (hero timeline).",
+      "rationale": "Requires the track to contain two identical halves so -50% lands exactly on the seam.",
+      "reducedMotion": "animation: none"
+    },
+    "reveal": {
+      "kind": "motion",
+      "definedIn": "src/index.css + src/App.jsx (Layout observer)",
+      "css": ".reveal { opacity:0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); } .reveal.is-visible { opacity:1; transform:none; }",
+      "usage": "Add the class to any element that should rise in on scroll. The Layout observer picks it up automatically per route.",
+      "contract": "Observer fires once (unobserve on intersect) and re-queries on every pathname change.",
+      "reducedMotion": "Fully visible, no transition."
+    }
+  },
+
+  "rules": [
+    "Never hardcode a hex that already exists in tokens.json — reference the Tailwind token name.",
+    "Pill actions always come from a btn-* variant; do not compose a new one inline.",
+    "Any pill with a trailing arrow uses <Arrow />, never an inline SVG copy — the negative margins are tuned.",
+    "Decimal pixel values in this design are measurements from the original, not mistakes. Do not round them."
+  ]
+}
