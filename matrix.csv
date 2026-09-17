@@ -1,0 +1,26 @@
+section,category,templates,routes,Home,Product detail,About,Contact,Blog index,Blog post,Not found
+chrome.navbar,CHROME,7,15,x,x,x,x,x,x,x
+chrome.footer,CHROME,7,15,x,x,x,x,x,x,x
+conversion.cta-band,CONVERSION,7,15,x,x,x,x,x,x,x
+hero.post,HERO,1,7,,,,,,x,
+narrative.article-body,NARRATIVE,1,7,,,,,,x,
+collection.related-posts,COLLECTION,1,7,,,,,,x,
+hero.product,HERO,1,3,,x,,,,,
+narrative.product-feature,NARRATIVE,1,3,,x,,,,,
+hero.home,HERO,1,1,x,,,,,,
+hero.about,HERO,1,1,,,x,,,,
+hero.contact,HERO,1,1,,,,x,,,
+hero.blog-featured,HERO,1,1,,,,,x,,
+hero.not-found,HERO,1,1,,,,,,,x
+showcase.hero-timeline,SHOWCASE,1,1,x,,,,,,
+showcase.product-frame,SHOWCASE,1,1,x,,,,,,
+showcase.system-video,SHOWCASE,1,1,x,,,,,,
+narrative.pillar-accordion,NARRATIVE,1,1,x,,,,,,
+narrative.approach,NARRATIVE,1,1,,,x,,,,
+narrative.intelligence-arc,NARRATIVE,1,1,,,x,,,,
+narrative.team,NARRATIVE,1,1,,,x,,,,
+collection.post-grid,COLLECTION,1,1,,,,,x,,
+collection.home-updates,COLLECTION,1,1,x,,,,,,
+conversion.contact-form,CONVERSION,1,1,,,,x,,,
+conversion.hiring,CONVERSION,1,1,,,x,,,,
+ROUTE COUNT,,,15,1,3,1,1,1,7,1

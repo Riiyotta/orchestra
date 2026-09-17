@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Display + body faces are open substitutes for the original's licensed
+   Greed Standard (Displaay) and Tiempos Text (Klim). To restore the originals,
+   license them and swap the two families in tailwind.config.js. */
+
+@layer base {
+  /* Greed Standard renders at weight 500 everywhere on the original, and the
+     only General Sans weights we load are 500/600 — leaving these at the
+     default 400 made the browser pick 500 and synthesise nothing, but the
+     computed weight still read 400 and drifted from the original. */
+  .font-display,
+  .btn,
+  .eyebrow {
+    font-weight: 500;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-paper font-body text-ink;
+    margin: 0;
+  }
+
+  ::selection {
+    @apply bg-mint text-ink;
+  }
+}
+
+@layer components {
+  /* The original's container is full-bleed with 32px gutters — the inner
+     content column runs 32..1248 at a 1280 viewport (1216 wide). Using
+     max-w:1216 + px-8 instead would inset content to 64..1216 (1152 wide),
+     which is 64px too narrow and 32px off-axis. */
+  .shell {
+    @apply mx-auto w-full px-5 md:px-8;
+    max-width: calc(1216px + 64px);
+  }
+
+  /* The 76px display drops to the 48px step below md on the original — it is
+     not fluid, it is a hard swap to the same values text-display-md uses. */
+  .display-hero {
+    @apply text-display-md md:text-display-xl;
+  }
+
+  .eyebrow {
+    @apply font-mono text-eyebrow font-medium uppercase;
+  }
+
+  /* Only the copyright line carries tracking; footer headings and the CTA
+     eyebrow measure at letter-spacing:normal on the original. */
+  .eyebrow-tight {
+    @apply eyebrow;
+    letter-spacing: normal;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-full font-display
+           transition-all duration-150 ease-out active:scale-[0.98];
+  }
+
+  /* Both pill buttons measure h40 on the original with asymmetric padding
+     (20px lead, 16px trail) because the trailing arrow icon carries its own
+     6px right padding. Font is 16/24 with letter-spacing normal, not -0.16. */
+  .btn-light {
+    @apply btn h-10 gap-1.5 bg-cream pl-5 pr-4 text-[16px] leading-6 text-ink hover:bg-white;
+    letter-spacing: normal;
+  }
+
+  .btn-mint {
+    @apply btn h-10 gap-1.5 bg-mint pl-5 pr-4 text-[16px] leading-6 text-ink hover:brightness-105;
+    letter-spacing: normal;
+  }
+
+  /* The arrow occupies a 16px box with 6px of trailing padding, so it adds
+     22px total — not 11px plus the flex gap, which overshot the pill by 8px. */
+  .btn-arrow {
+    @apply inline-block h-2 w-[11px] shrink-0;
+    margin-left: -1.5px;
+    margin-right: -1.5px;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/25 px-5 py-2.5 text-label text-cream hover:border-white/50 hover:bg-white/5;
+  }
+}
+
+@layer utilities {
+  /* Duplicate-and-loop marquee: the track holds two identical halves, so
+     translating by -50% lands exactly on the seam. */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
