@@ -1,25 +1,23 @@
-const POSTS = [
-  {
-    title: 'How biotechs can manage CROs with agents',
-    href: '/blog/how-biotechs-can-manage-cros-with-agents',
-    image:
-      'https://framerusercontent.com/images/aBVvXpB0r2rfq6xa8aVntZF33c.png?scale-down-to=512&width=3408&height=1506',
-  },
-  {
-    title: 'Agents for R&D: Science',
-    href: '/blog/agents-for-r-d-science',
-    image:
-      'https://framerusercontent.com/images/77xOndwSYi2QRMgwkkstALd0Jhw.png?scale-down-to=512&width=3600&height=1520',
-  },
-  {
-    title: 'From paper to cloud to agents: the digital transformation of R&D',
-    href: '/blog/from-paper-to-cloud-to-agents',
-    image:
-      'https://framerusercontent.com/images/xqSsX0CC45mgPMZl0wpS1baL1Io.png?scale-down-to=512&width=3600&height=1800',
-  },
+import { Link } from 'react-router-dom'
+import { POSTS } from '../content/posts.js'
+
+/* Which three posts the home band promotes is an editorial choice, not
+   "the newest three" — the original skips `agents-for-r-d-strategy` and runs
+   posts 1, 2 and 4. Keep that choice explicit here rather than slicing POSTS,
+   so reordering the blog can't silently change the home page. */
+const FEATURED_SLUGS = [
+  'how-biotechs-can-manage-cros-with-agents',
+  'agents-for-r-d-science',
+  'from-paper-to-cloud-to-agents',
 ]
 
+/* Cards render at 242.52px, so they take the 512px-wide variant rather than
+   the 1024 the blog routes use. posts.js stores the 1024 URL; narrow it here. */
+const thumb = (image) => image.replace('scale-down-to=1024', 'scale-down-to=512')
+
 export default function Updates() {
+  const posts = FEATURED_SLUGS.map((slug) => POSTS.find((p) => p.slug === slug)).filter(Boolean)
+
   return (
     <section className="bg-ink py-12 md:py-[88px]">
       <div className="shell">
@@ -29,11 +27,11 @@ export default function Updates() {
         </h2>
 
         <div className="mt-10 grid gap-8 md:mt-[40px] md:grid-cols-3">
-          {POSTS.map(({ title, href, image }) => (
-            <a key={href} href={href} className="group flex flex-col items-start">
+          {posts.map(({ slug, title, image }) => (
+            <Link key={slug} to={`/blog/${slug}`} className="group flex flex-col items-start">
               <div className="w-full overflow-hidden rounded-xl bg-ink-2">
                 <img
-                  src={image}
+                  src={thumb(image)}
                   alt=""
                   className="h-[242.52px] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                   loading="lazy"
@@ -46,7 +44,7 @@ export default function Updates() {
                   {title}
                 </h3>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

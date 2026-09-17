@@ -79,10 +79,24 @@ for (const page of ['Home', 'About', 'Contact', 'Product', 'BlogIndex', 'BlogPos
     err(`invariant broken: src/pages/${page}.jsx imports CTA — it must only be rendered by Footer`)
 }
 
-/* 8. Known drift: components that duplicate a shared content source. */
+/* 8. Regression guard (was DRIFT-01, fixed): section components must read post
+ *    data from the shared source, never redeclare it inline. */
 const updates = readFileSync(join(ROOT, 'src/components/Updates.jsx'), 'utf8')
-if (!/from '.*content\/posts/.test(updates) && /const POSTS\s*=/.test(updates))
-  warn('DRIFT-01: Updates.jsx hardcodes its own POSTS array instead of importing src/content/posts.js (documented in components.json knownIssue)')
+if (!/from '.*content\/posts/.test(updates))
+  err('Updates.jsx no longer imports src/content/posts.js — post data must come from the shared source')
+if (/const POSTS\s*=/.test(updates))
+  err('Updates.jsx redeclares POSTS locally — this is the DRIFT-01 duplication returning')
+
+/* 9. Internal routes use <Link>; a raw <a href="/..."> costs a full reload and
+ *    loses the router's scroll-to-top. External hrefs are exempt. */
+for (const [name, c] of Object.entries(components.components)) {
+  if (!existsSync(join(ROOT, c.file))) continue
+  const src = readFileSync(join(ROOT, c.file), 'utf8')
+  // Matches href="/x", href={`/x/${y}`} and href={'/x'} — but not external
+  // URLs, mailto:, or an opaque href={expr} whose target we cannot see.
+  for (const m of src.matchAll(/<a\b[^>]*?href=(?:["'`]|\{\s*["'`])(\/[^"'`]*)/g))
+    err(`${c.file} uses a raw <a href="${m[1]}"> for an internal route — use <Link to=...> instead`)
+}
 
 /* Report */
 const ok = (s) => `\x1b[32m${s}\x1b[0m`, bad = (s) => `\x1b[31m${s}\x1b[0m`, yel = (s) => `\x1b[33m${s}\x1b[0m`

@@ -93,14 +93,14 @@
       "kind": "section-component",
       "section": "collection.home-updates",
       "description": "Ink 'Latest updates' band: three recent posts as cover-and-title cards.",
-      "note": "Heading is mint-soft on the original, not cream. Card title sits in its own 20px/8px padded block, inset 8px from the image edge.",
+      "note": "Heading is mint-soft on the original, not cream. Card title sits in its own 20px/8px padded block, inset 8px from the image edge. Cards take the 512px image variant (narrowed from the 1024 stored in posts.js) to match the 242.52px render height.",
       "scope": "Home route only.",
-      "knownIssue": "DRIFT-01 — holds its own hardcoded POSTS array instead of importing from src/content/posts.js. See validate.mjs."
+      "contract": "Reads POSTS from src/content/posts.js. Which three posts appear is an explicit editorial list (FEATURED_SLUGS = posts 1, 2, 4), not a slice — the original skips agents-for-r-d-strategy, so reordering the blog must not change the home page."
     }
   },
 
   "contentSources": {
-    "src/content/posts.js":    { "exports": "POSTS", "count": 7, "consumedBy": ["pages/BlogIndex", "pages/BlogPost"], "note": "Article bodies are intentionally empty stubs." },
+    "src/content/posts.js":    { "exports": "POSTS", "count": 7, "consumedBy": ["pages/BlogIndex", "pages/BlogPost", "components/Updates"], "note": "Article bodies are intentionally empty stubs." },
     "src/content/products.js": { "exports": "PRODUCTS", "count": 3, "consumedBy": ["pages/Product"], "shape": "keyed by slug: { eyebrow, title, subhead, features[3] }" },
     "src/content/team.js":     { "exports": "TEAM", "consumedBy": ["pages/About"] }
   }

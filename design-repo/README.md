@@ -47,8 +47,14 @@ drift apart.
 
 ## Known issues
 
-- **DRIFT-01** — `src/components/Updates.jsx` hardcodes its own 3-post `POSTS`
-  array (with `scale-down-to=512` images) instead of importing the shared
-  `src/content/posts.js` (7 posts, `scale-down-to=1024`). The validator warns.
-  Fixing it means importing `POSTS`, taking the first three, and confirming the
-  card images still render at the measured `242.52px` height.
+None open. The validator enforces the following as errors:
+
+- **DRIFT-01 (fixed)** — `Updates.jsx` now imports `POSTS` from
+  `src/content/posts.js`. Which three posts appear is an explicit
+  `FEATURED_SLUGS` list, not a slice: the design promotes posts 1, 2 and **4**,
+  skipping `agents-for-r-d-strategy`, so reordering the blog must not silently
+  change the home page. A guard fails the build if the local `POSTS` array
+  returns.
+- **Internal routes use `<Link>`** — a raw `<a href="/...">` in a component
+  costs a full page reload and loses the router's scroll-to-top. External
+  hrefs (`app.orchestra.bio`, LinkedIn, `mailto:`) are exempt.
