@@ -1,0 +1,80 @@
+{
+  "$comment": "Closed assetRole enum for every media field in sections/content-contracts.json, wired through schema/pagespec.schema.json's enum, tokens/llm/component-allowlist.json (settableProperties reference these role ids) and schema/example.pagespec.json. This is a real, live company's cloned site — see localizationDecision and generationGuidance below before treating any media field as freely generatable.",
+  "version": "1.0.0",
+  "sourceCompany": {
+    "note": "The source site (orchestra.bio) belongs to a real, currently operating company. Screenshots, product video, and team photography in this clone are that company's real proprietary/personal content, reused here for a design-fidelity rebuild — not licensed stock, not this repo's own IP."
+  },
+  "localizationDecision": {
+    "decision": "keep-evidence-only-external",
+    "status": "final-for-this-build-pass",
+    "rationale": "All images and both MP4s are currently referenced live from framerusercontent.com (Framer's asset CDN), not mirrored into this repo — see README.md 'Images and video'. README.md's own text already flags an unresolved prerequisite: 'confirm first that none are stock or contractor-supplied under narrower terms, then download and repoint.' That licensing verification has not happened. Since the source is a real, live company's site, the correct call for this design-repo build pass is to NOT download or rehost any of this third-party media — doing so without the licensing check would risk redistributing content under terms this project has not verified. This decision is documented here permanently as the resolution to that open question, not a temporary placeholder: assets stay evidence-only / externally-referenced until a human owner completes the licensing check described in README.md and explicitly decides to localize.",
+    "reversalCondition": "Only reverse this decision after: (1) a human confirms licensing terms for each asset with the rights holder or Framer, (2) assets are downloaded and re-hosted under this project's own control, (3) README.md and this file are both updated to reflect the new state — never do this unilaterally as part of an AI generation task.",
+    "citedIn": "README.md:38-44"
+  },
+  "roles": {
+    "photo.background": {
+      "description": "Full-bleed background photo layer behind conversion.cta-band.",
+      "generationPolicy": "must-not-fabricate",
+      "generationNote": "This is the real site's own CTA background photo, served from framerusercontent.com. A generator must reuse the exact existing asset reference; it must not generate a new background image to replace it.",
+      "usedBySections": ["conversion.cta-band"],
+      "sourceExample": "https://framerusercontent.com/images/E6Gw45Xk2VqeMVk6aTxadLhT7t4.png"
+    },
+    "photo.editorial": {
+      "description": "Full-height editorial photograph beside the contact hero copy.",
+      "generationPolicy": "must-not-fabricate",
+      "generationNote": "Real site photography. Reuse the exact existing asset; do not generate a replacement.",
+      "usedBySections": ["hero.contact"],
+      "sourceExample": "https://framerusercontent.com/images/E6Gw45Xk2VqeMVk6aTxadLhT7t4.png?scale-down-to=1024"
+    },
+    "product.screenshot": {
+      "description": "Product UI screenshot (dashboards, planning views, scenario builder) shown in showcase and narrative sections.",
+      "generationPolicy": "must-not-fabricate",
+      "generationNote": "These are real screenshots of the actual Orchestra product. A generator MUST NOT synthesize a fake product UI and present it as this company's software — that would misrepresent a real product's real interface. Reuse the exact existing screenshot references for any page composed against this design-repo's real content.",
+      "usedBySections": ["showcase.product-frame", "narrative.pillar-accordion", "narrative.product-feature"],
+      "sourceExample": "https://framerusercontent.com/images/nvJEWiKQAkx90VNVmqbVvazig.png?scale-down-to=1024"
+    },
+    "product.demo-video": {
+      "description": "Looping MP4 of the live product interface / management system.",
+      "generationPolicy": "must-not-fabricate",
+      "generationNote": "Real captured product footage. Never generate synthetic video and label it as this product's real interface.",
+      "usedBySections": ["showcase.product-frame", "showcase.system-video"],
+      "format": "mp4",
+      "sourceHost": "framerusercontent.com"
+    },
+    "blog.cover": {
+      "description": "Blog post cover image (full width, at the top of hero.post / hero.blog-featured, and as the thumbnail in collection.post-grid / collection.related-posts).",
+      "generationPolicy": "may-reuse-or-generate-new",
+      "generationNote": "For the 7 real existing posts, reuse the exact existing cover. For a genuinely NEW post added to this content system, a generator MAY produce a new editorial-style cover image, provided it does not depict real identifiable people, real company logos, or any imagery implying it is authentic captured photography of a real event that did not happen.",
+      "usedBySections": ["hero.post", "hero.blog-featured", "collection.post-grid", "collection.related-posts"],
+      "sourceExample": "https://framerusercontent.com/images/aBVvXpB0r2rfq6xa8aVntZF33c.png?scale-down-to=1024"
+    },
+    "blog.cover-narrow": {
+      "description": "Same blog cover image family as blog.cover, but requested at a narrower rendition (the 512px variant, per components/components.json's note on Updates.jsx) to match the home-updates card's measured 242.52px render height.",
+      "generationPolicy": "may-reuse-or-generate-new",
+      "generationNote": "Same policy as blog.cover — this is a size variant, not a different image.",
+      "usedBySections": ["collection.home-updates"]
+    },
+    "blog.inline-figure": {
+      "description": "An inline figure image inside a blog article body block (type: 'figure').",
+      "generationPolicy": "may-generate-new",
+      "generationNote": "Article bodies are currently empty placeholders (see registry.manifest.json knownGaps: blog-body-placeholder) — no real inline figures exist yet to reuse. A generator filling in new article content MAY generate new illustrative imagery, provided it is captioned honestly and not presented as a real historical photograph.",
+      "usedBySections": ["narrative.article-body"]
+    },
+    "team.photo": {
+      "description": "Individual team member portrait, or the full-width group photograph, in the About page's team section.",
+      "generationPolicy": "must-not-fabricate",
+      "generationNote": "These are real photographs of real named employees of a real company. A generator MUST NEVER fabricate a new 'team member' with an invented name, role, or AI-generated face. Reuse the exact existing assets and person records from src/content/team.js only.",
+      "usedBySections": ["narrative.team"],
+      "complianceNote": "This is a compliance requirement, not a style preference, whenever the source is a real company (per MASTER-GUIDE 3.5)."
+    }
+  },
+  "generationGuidance": {
+    "generalRule": "Default posture for every role is must-not-fabricate unless explicitly marked may-generate-new or may-reuse-or-generate-new above. When in doubt, reuse the real existing asset reference rather than generating a substitute.",
+    "prohibited": [
+      "Fabricating a new person, face, or team member not in src/content/team.js.",
+      "Generating a fake product screenshot and presenting it as Orchestra's real software UI.",
+      "Downloading and rehosting any framerusercontent.com asset without completing the licensing check described in localizationDecision above.",
+      "Presenting AI-generated blog imagery as a real historical photograph without disclosure."
+    ]
+  }
+}

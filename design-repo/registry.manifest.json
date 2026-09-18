@@ -1,0 +1,72 @@
+{
+  "$comment": "Top-level registry for AI page generation against this design-repo. This is additive to, not a replacement for, schema/schema.json (the internal shape/drift validator for tokens/primitives/components/sections/templates) and schema/validate-design-repo.mjs (which keeps passing unmodified — see CHANGELOG note in this file's history for the migration rationale).",
+  "repositoryId": "orchestra-design-repo",
+  "repositoryVersion": "1.0.0",
+  "pageSpecVersion": "1.0.0",
+  "versionFieldNote": "repositoryVersion and pageSpecVersion are documentation-only, hand-maintained markers — nothing in extraction/verify_all.mjs checks them automatically. allowlistVersion (below) IS machine-checked: verify_all.mjs fails the run if tokens/llm/component-allowlist.json's own \"version\" field drifts from the value recorded here.",
+  "status": "design-review-pending",
+  "productionApproved": false,
+  "sourceProject": {
+    "name": "orchestra",
+    "description": "React 18 + Vite 5 + Tailwind v3 rebuild of orchestra.bio, measured against the live site at a 1280px viewport.",
+    "note": "This manifest intentionally records no filesystem path to the source project — see entryPoints below, which lists only paths inside this design-repo package."
+  },
+  "theme": {
+    "approved": "light",
+    "available": ["light"],
+    "note": "Single theme instance. The source site has no dark-mode variant; 'ink' and 'paper' are surface roles within the one theme, not separate theme modes — see tokens/llm/token-catalog.json."
+  },
+  "counts": {
+    "note": "Recomputed from design-repo/sections/sections.json, design-repo/templates/templates.json and the root ia.json by extraction/verify_all.mjs on every run — this block is a snapshot, not the source of truth. A drift between these numbers and the live files fails verification (see MASTER-GUIDE 3.16).",
+    "sections": 24,
+    "templates": 7,
+    "routes": 15
+  },
+  "allowlistVersion": "1.0.0",
+  "entryPoints": {
+    "internalShapeSchema": "schema/schema.json",
+    "internalShapeValidator": "schema/validate-design-repo.mjs",
+    "internalShapeSync": "schema/sync.mjs",
+    "pageSpecSchema": "schema/pagespec.schema.json",
+    "pageSpecExample": "schema/example.pagespec.json",
+    "semanticValidator": "schema/semantic_validate.mjs",
+    "adversarialTests": "schema/tests/adversarial_test.mjs",
+    "sections": "sections/sections.json",
+    "contentContracts": "sections/content-contracts.json",
+    "templates": "templates/templates.json",
+    "compatibilityGraph": "compatibility/graph.json",
+    "tokens": "tokens/tokens.json",
+    "tokenCatalog": "tokens/llm/token-catalog.json",
+    "tokenPolicy": "tokens/llm/token-policy.json",
+    "componentAllowlist": "tokens/llm/component-allowlist.json",
+    "primitives": "primitives/primitives.json",
+    "components": "components/components.json",
+    "assetRoles": "assets/asset-roles.json",
+    "motionSpec": "motion/motion-spec.json",
+    "measuredValues": "extraction/measured-values.json",
+    "verifyAll": "extraction/verify_all.mjs"
+  },
+  "entryPointsNote": "Every path above resolves inside this design-repo/ folder only — no '../' paths pointing at the root ia.json, IA.md, matrix.csv, or src/. Those are real, valuable build-time evidence, cited by path+line in extraction/measured-values.json, which degrades gracefully (warns, does not fail) if no sibling source tree is present when this folder is copied or zipped standalone.",
+  "knownGaps": [
+    {
+      "id": "blog-body-placeholder",
+      "severity": "content",
+      "summary": "All 7 blog post routes (template.blog-post, section narrative.article-body) render a placeholder message in place of real article prose. src/content/posts.js ships every post with body: [] — an intentional empty stub, not a bug. See sections/content-contracts.json's narrative.article-body.contentIntegrity field for the machine-readable flag, and src/pages/BlogPost.jsx's own rendered fallback copy for the runtime behavior.",
+      "citedIn": ["sections/content-contracts.json#narrative.article-body", "sections/sections.json#narrative.article-body"]
+    },
+    {
+      "id": "framer-assets-not-localized",
+      "severity": "decision",
+      "summary": "All images and both MP4s are referenced live from framerusercontent.com rather than mirrored into this repo. This is a deliberate, documented decision (not an oversight) — see assets/asset-roles.json's localizationDecision field for the full rationale: the source is a real, live company's site, and README.md flags an unresolved licensing-verification prerequisite before any of this media could be legitimately self-hosted.",
+      "citedIn": ["assets/asset-roles.json", "README.md"]
+    },
+    {
+      "id": "contact-form-no-backend",
+      "severity": "behavior",
+      "summary": "conversion.contact-form posts nowhere; onSubmit sets local state and shows a confirmation message. Not reproduced: the original's ~11 zero-size hidden honeypot inputs (they only work paired with server-side filtering this clone doesn't have).",
+      "citedIn": ["sections/content-contracts.json#conversion.contact-form", "src/pages/Contact.jsx"]
+    }
+  ],
+  "generatedBy": "design-repo-extraction skill, N0 layer build pass",
+  "lastVerified": "2026-09-18"
+}

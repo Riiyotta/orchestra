@@ -1,0 +1,49 @@
+{
+  "$comment": "What is enforced (machine-checked) vs. what is convention (a rule stated but not currently mechanically verified) for token usage in generated PageSpecs.",
+  "version": "1.0.0",
+  "enforced": [
+    {
+      "rule": "colorRole-closed-enum",
+      "description": "A PageSpec node's color/token references must be one of tokens/llm/token-catalog.json's colorRoles/typeRoles/layoutRoles/radiusRoles/motionRoles keys.",
+      "checkedBy": "schema/pagespec.schema.json (enum) + schema/semantic_validate.mjs"
+    },
+    {
+      "rule": "no-raw-hex-or-tailwind-class-in-pagespec",
+      "description": "A PageSpec must never carry a literal hex color, an inline style, or a raw Tailwind utility class — only catalog role ids.",
+      "checkedBy": "schema/semantic_validate.mjs (pattern check on all string fields)"
+    },
+    {
+      "rule": "reducedMotionFallback-required",
+      "description": "Every node's motion object must declare a reducedMotionFallback.",
+      "checkedBy": "schema/pagespec.schema.json (required) + schema/semantic_validate.mjs"
+    },
+    {
+      "rule": "maxWords-budgets",
+      "description": "Every text-bearing content field obeys the maxWords budget in sections/content-contracts.json.",
+      "checkedBy": "schema/semantic_validate.mjs"
+    },
+    {
+      "rule": "assetRole-closed-enum",
+      "description": "Every media field's assetRole is one of assets/asset-roles.json's closed roles.",
+      "checkedBy": "schema/pagespec.schema.json (enum) + schema/semantic_validate.mjs"
+    }
+  ],
+  "convention": [
+    {
+      "rule": "decimal-pixel-measurements-are-real",
+      "description": "Values like 521.47px, 242.52px, 94.94px, 79.8px in tokens.json/primitives.json are measured originals, not typos — never 'tidy' them to a round number.",
+      "checkedBy": "none — human/reviewer convention only, stated in design-repo/README.md rule 4"
+    },
+    {
+      "rule": "cta-band-single-render-site",
+      "description": "conversion.cta-band is rendered only as Footer's first child; page components must never render it themselves.",
+      "checkedBy": "schema/validate-design-repo.mjs (existing internal-shape check #7) — the internal-shape validator enforces this against real source, not the PageSpec layer, since a PageSpec composes sections abstractly and doesn't know Footer's own JSX structure."
+    },
+    {
+      "rule": "arrow-atom-reuse",
+      "description": "Any pill CTA with a trailing arrow references the Arrow primitive, never an inline SVG copy.",
+      "checkedBy": "none at the PageSpec layer — this is a source-code-level convention (design-repo/README.md rule 3), out of scope for a page-composition schema."
+    }
+  ],
+  "versionFieldNote": "This file's own \"version\" is documentation-only, like repositoryVersion/pageSpecVersion in registry.manifest.json — nothing currently diffs it automatically. Only tokens/llm/component-allowlist.json's version is cross-checked against registry.manifest.json's allowlistVersion."
+}

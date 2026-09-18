@@ -17,11 +17,35 @@ rather than authored alongside it. Every value here was read out of
 | `schema/sync.mjs` | hand | Regenerates the two generated files from `ia.json`. |
 | `schema/validate-design-repo.mjs` | hand | Checks integrity + drift. Exits non-zero on error. |
 
+## N0 layer (AI page-generation contract)
+
+Additive to everything above — the internal-shape files keep validating this
+design-repo's own consistency, while the N0 layer below is what an AI-driven
+page generator reads to compose new, on-brand pages. See
+`registry.manifest.json` for the full entry-point map.
+
+| Path | What it holds |
+|---|---|
+| `registry.manifest.json` | Top-level registry: repo id, theme, recomputed counts, entry points, known content gaps. |
+| `schema/pagespec.schema.json` | Draft-07 JSON Schema for a generated page composition (a "PageSpec"). Distinct from `schema/schema.json`. |
+| `schema/example.pagespec.json` | One real, complete, passing PageSpec (template.blog-post, using real copy). |
+| `schema/semantic_validate.mjs` | Enforces what JSON Schema can't: template/node-sequence agreement, per-section content contracts, compatibility rules, maxWords, assetRole closure. |
+| `schema/tests/adversarial_test.mjs` | 7 template controls + 28 mutations, all proven to behave correctly. |
+| `sections/content-contracts.json` | Generation-ready, closed content contracts for all 24 sections (required fields, maxWords, enums) — additive to `sections/sections.json`'s prose descriptions. |
+| `tokens/llm/token-catalog.json` / `token-policy.json` / `component-allowlist.json` | Curated token view + enforcement policy + closed section allowlist for a generator. |
+| `compatibility/graph.json` | Rhythm/ordering rules for the 7 real templates, each with a severity. |
+| `assets/asset-roles.json` | Closed assetRole enum + the Framer-asset localization decision + AI-generation/licensing guidance (real company, real people — see file). |
+| `motion/motion-spec.json` | Canonical motion contract, closed to the real, evidence-grounded patterns actually implemented. |
+| `extraction/measured-values.json` / `verify_all.mjs` | Citation ledger + drift checks (allowlist parity, citation validity, manifest/reality count drift), all proven with a scratch-copy injection test. |
+
 ## Commands
 
 ```bash
-node design-repo/schema/validate-design-repo.mjs   # check (exit 1 on error)
+node design-repo/schema/validate-design-repo.mjs   # internal-shape check (exit 1 on error)
 node design-repo/schema/sync.mjs                   # regenerate derived files
+node design-repo/schema/semantic_validate.mjs       # validate a PageSpec (defaults to the bundled example)
+node design-repo/schema/tests/adversarial_test.mjs  # run the adversarial suite
+node design-repo/extraction/verify_all.mjs          # allowlist parity + citation validity + manifest drift
 ```
 
 ## Source of truth
@@ -44,6 +68,22 @@ drift apart.
 5. **`display-hero` is a hard swap, not fluid type.** 76px → 48px below `md`. Don't replace it with `clamp()`.
 6. **`CTA` is rendered by `Footer` only.** It is the footer's first child, on the footer's ink background — never render it from a page.
 7. **Fonts are substitutes.** `General Sans` and `Source Serif 4` stand in for the licensed Greed Standard and Tiempos Text. Swap both in `tailwind.config.js` to restore the originals — and re-check `SystemBand`'s pinned `h-[104px]` heading box, which exists only because the substitute face wraps wider.
+
+## Known content gaps (N0 layer)
+
+See `registry.manifest.json`'s `knownGaps` array for the machine-readable
+version. In prose:
+
+- **Blog article bodies are placeholders.** All 7 real posts ship with
+  `body: []` in `src/content/posts.js` — `BlogPost.jsx` renders a literal
+  placeholder message in their place. `sections/content-contracts.json`'s
+  `narrative.article-body.contentIntegrity` field flags this explicitly for
+  any generator reading this repo.
+- **Framer-hosted assets stay external, by decision, not oversight.** Images
+  and both MP4s are referenced live from `framerusercontent.com` rather than
+  mirrored into this repo. `assets/asset-roles.json`'s `localizationDecision`
+  documents why (an unresolved licensing-verification prerequisite this
+  README already flagged) and what would need to happen before that changes.
 
 ## Known issues
 

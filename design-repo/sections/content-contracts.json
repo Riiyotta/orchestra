@@ -1,0 +1,943 @@
+{
+  "$comment": "Generation-ready content/property contracts for all 24 real sections in sections/sections.json. Closed schemas: required fields, maxWords/maxItems budgets, closed enums where the original has fixed labels. Additive to sections/sections.json (which stays prose-level, derived from ia.json, do not hand-edit) — this file is the machine contract a PageSpec generator and schema/semantic_validate.mjs both read.",
+  "generatedFrom": "Direct inspection of src/pages/*, src/components/*, src/content/*.js and README.md, cross-checked against sections/sections.json and templates/templates.json.",
+  "version": "1.0.0",
+  "contracts": {
+    "chrome.navbar": {
+      "category": "CHROME",
+      "mustBeFirst": true,
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "allRoutes",
+      "contentEditable": false,
+      "content": {
+        "$comment": "Fixed chrome — not a generation surface. A PageSpec references this section by id only; it carries no per-instance content fields."
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion on this section"
+      },
+      "measuredFrom": "src/components/Navbar.jsx"
+    },
+    "chrome.footer": {
+      "category": "CHROME",
+      "mustBeLast": true,
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "allRoutes",
+      "contentEditable": false,
+      "content": {
+        "$comment": "Fixed chrome. Always renders conversion.cta-band as its first child — see constraints."
+      },
+      "constraints": {
+        "rendersChild": "conversion.cta-band",
+        "note": "conversion.cta-band still appears in nodes[] as its own node, immediately before chrome.footer (per templates/templates.json). This field just documents that, at the real source-code level, Footer.jsx renders <CTA/> as its first child rather than a page component importing it directly."
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion on this section"
+      },
+      "measuredFrom": "src/components/Footer.jsx"
+    },
+    "conversion.cta-band": {
+      "category": "CONVERSION",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "allRoutes",
+      "constraints": {
+        "positionalRule": "immediatelyPrecedes:chrome.footer",
+        "note": "This section IS a required node in nodes[], placed immediately before chrome.footer on every template (templates/templates.json). Separately, at the real source-code level, it is rendered by Footer.jsx as its first child rather than imported by any page component directly — see design-repo/README.md rule 6 and schema/validate-design-repo.mjs check #7. That implementation detail does not change how a PageSpec composes this section."
+      },
+      "content": {
+        "eyebrow": {
+          "type": "string",
+          "maxWords": 4,
+          "required": true
+        },
+        "headline": {
+          "type": "string",
+          "maxWords": 12,
+          "required": true
+        },
+        "subhead": {
+          "type": "string",
+          "maxWords": 24,
+          "required": true
+        },
+        "cta": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxWords": 4,
+              "enum": [
+                "Book a demo"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "/contact"
+              ]
+            }
+          }
+        },
+        "backgroundImage": {
+          "type": "object",
+          "required": true,
+          "assetRole": "photo.background"
+        }
+      },
+      "motion": {
+        "allowed": [
+          "reveal"
+        ],
+        "reducedMotionFallback": "fully visible, no transition"
+      },
+      "measuredFrom": "src/components/CTA.jsx"
+    },
+    "hero.home": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "content": {
+        "headline": {
+          "type": "string",
+          "maxWords": 14,
+          "required": true,
+          "note": "Renders as two lines on the original at 76px."
+        },
+        "subhead": {
+          "type": "string",
+          "maxWords": 20,
+          "required": true
+        },
+        "cta": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxWords": 4,
+              "enum": [
+                "Book a demo"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "/contact"
+              ]
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [
+          "reveal"
+        ],
+        "reducedMotionFallback": "fully visible, no transition"
+      },
+      "measuredFrom": "src/components/Hero.jsx"
+    },
+    "hero.product": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "productDetailRouteOnly",
+      "content": {
+        "eyebrow": {
+          "type": "string",
+          "maxWords": 4,
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "maxWords": 14,
+          "required": true
+        },
+        "subhead": {
+          "type": "string",
+          "maxWords": 24,
+          "required": true
+        },
+        "cta": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxWords": 4,
+              "enum": [
+                "Book a demo"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "/contact"
+              ]
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — static hero, no motion measured"
+      },
+      "measuredFrom": "src/pages/Product.jsx, src/content/products.js"
+    },
+    "hero.about": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "aboutRouteOnly",
+      "content": {
+        "eyebrow": {
+          "type": "string",
+          "maxWords": 3,
+          "required": true,
+          "enum": [
+            "About"
+          ]
+        },
+        "missionStatement": {
+          "type": "string",
+          "maxWords": 30,
+          "required": true
+        },
+        "cta": {
+          "type": "null",
+          "required": false,
+          "note": "This hero explicitly carries no call to action — do not add one."
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/About.jsx"
+    },
+    "hero.contact": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "contactRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 6,
+          "required": true
+        },
+        "intro": {
+          "type": "string",
+          "maxWords": 30,
+          "required": true
+        },
+        "image": {
+          "type": "object",
+          "required": true,
+          "assetRole": "photo.editorial"
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/Contact.jsx"
+    },
+    "hero.blog-featured": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "blogIndexRouteOnly",
+      "content": {
+        "title": {
+          "type": "string",
+          "maxWords": 14,
+          "required": true
+        },
+        "excerpt": {
+          "type": "string",
+          "maxWords": 40,
+          "required": true
+        },
+        "cover": {
+          "type": "object",
+          "required": true,
+          "assetRole": "blog.cover"
+        },
+        "linkLabel": {
+          "type": "string",
+          "maxWords": 3,
+          "enum": [
+            "Learn more"
+          ],
+          "required": true
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/BlogIndex.jsx, src/content/posts.js"
+    },
+    "hero.post": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "blogPostRouteOnly",
+      "content": {
+        "readTime": {
+          "type": "string",
+          "pattern": "^[0-9]+ min read$",
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "maxWords": 20,
+          "required": true
+        },
+        "excerpt": {
+          "type": "string",
+          "maxWords": 40,
+          "required": false,
+          "note": "Optional — 6 of 7 real posts ship with an empty excerpt."
+        },
+        "cover": {
+          "type": "object",
+          "required": true,
+          "assetRole": "blog.cover"
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/BlogPost.jsx, src/content/posts.js"
+    },
+    "hero.not-found": {
+      "category": "HERO",
+      "onePerPage": true,
+      "mustBeFirstAfter": "chrome.navbar",
+      "repeatable": false,
+      "routeRestriction": "catchAllRouteOnly",
+      "content": {
+        "eyebrow": {
+          "type": "string",
+          "maxWords": 2,
+          "required": true,
+          "note": "Numeric, e.g. \"404\"."
+        },
+        "headline": {
+          "type": "string",
+          "maxWords": 10,
+          "required": true
+        },
+        "linkLabel": {
+          "type": "string",
+          "maxWords": 6,
+          "required": true,
+          "target": "/"
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/NotFound.jsx"
+    },
+    "showcase.hero-timeline": {
+      "category": "SHOWCASE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "constraints": {
+        "mustFollow": "hero.home"
+      },
+      "content": {
+        "statusChips": {
+          "type": "array",
+          "maxItems": 12,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxWords": 3
+              }
+            }
+          }
+        }
+      },
+      "contentIntegrity": {
+        "status": "partially-invented",
+        "note": "The original is a flat SVG strip. This section is a live CSS marquee with chips built from the site’s own status labels; labels beyond the visible ones are invented, not extracted. See README.md \"Known interpretations\".",
+        "citedIn": "README.md:106-109"
+      },
+      "motion": {
+        "allowed": [
+          "marquee"
+        ],
+        "reducedMotionFallback": "animation: none"
+      },
+      "measuredFrom": "src/components/HeroTimeline.jsx"
+    },
+    "showcase.product-frame": {
+      "category": "SHOWCASE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "content": {
+        "screenshot": {
+          "type": "object",
+          "required": true,
+          "assetRole": "product.screenshot"
+        },
+        "video": {
+          "type": "object",
+          "required": true,
+          "assetRole": "product.demo-video"
+        }
+      },
+      "motion": {
+        "allowed": [
+          "viewportGatedPlayback"
+        ],
+        "reducedMotionFallback": "video does not autoplay; poster frame (the screenshot) shown instead"
+      },
+      "measuredFrom": "src/components/Showcase.jsx"
+    },
+    "showcase.system-video": {
+      "category": "SHOWCASE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 10,
+          "required": true
+        },
+        "video": {
+          "type": "object",
+          "required": true,
+          "assetRole": "product.demo-video"
+        }
+      },
+      "motion": {
+        "allowed": [
+          "loop"
+        ],
+        "reducedMotionFallback": "video loops without an explicit pause control on prefers-reduced-motion; poster frame shown if playback is suppressed by the browser"
+      },
+      "measuredFrom": "src/components/SystemBand.jsx"
+    },
+    "narrative.pillar-accordion": {
+      "category": "NARRATIVE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 10,
+          "required": true
+        },
+        "tabs": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxWords": 3
+              },
+              "body": {
+                "type": "string",
+                "maxWords": 60
+              },
+              "screenshot": {
+                "type": "object",
+                "assetRole": "product.screenshot"
+              }
+            }
+          }
+        }
+      },
+      "contentIntegrity": {
+        "status": "partially-authored",
+        "note": "The body copy for the \"Financial Modelling\" tab is written for this rebuild, not extracted, since it sits behind an interactive tab the recon pass could not screenshot in its resting state.",
+        "citedIn": "README.md:109-112"
+      },
+      "motion": {
+        "allowed": [
+          "autoAdvanceCrossfade"
+        ],
+        "reducedMotionFallback": "first tab shown statically, no auto-advance, no cross-fade"
+      },
+      "measuredFrom": "src/components/Pillars.jsx"
+    },
+    "narrative.product-feature": {
+      "category": "NARRATIVE",
+      "onePerPage": false,
+      "repeatable": true,
+      "exactCountPerPage": 3,
+      "routeRestriction": "productDetailRouteOnly",
+      "content": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3,
+          "required": true
+        },
+        "heading": {
+          "type": "string",
+          "maxWords": 12,
+          "required": true
+        },
+        "copy": {
+          "type": "string",
+          "maxWords": 40,
+          "required": true
+        },
+        "image": {
+          "type": "object",
+          "required": true,
+          "assetRole": "product.screenshot"
+        }
+      },
+      "motion": {
+        "allowed": [
+          "reveal"
+        ],
+        "reducedMotionFallback": "fully visible, no transition"
+      },
+      "measuredFrom": "src/pages/Product.jsx, src/content/products.js"
+    },
+    "narrative.approach": {
+      "category": "NARRATIVE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "aboutRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 8,
+          "required": true
+        },
+        "body": {
+          "type": "string",
+          "maxWords": 60,
+          "required": true
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/About.jsx"
+    },
+    "narrative.intelligence-arc": {
+      "category": "NARRATIVE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "aboutRouteOnly",
+      "content": {
+        "leadIn": {
+          "type": "string",
+          "maxWords": 20,
+          "required": true
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3
+              },
+              "label": {
+                "type": "string",
+                "maxWords": 6
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/About.jsx"
+    },
+    "narrative.team": {
+      "category": "NARRATIVE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "aboutRouteOnly",
+      "content": {
+        "members": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "portrait": {
+                "type": "object",
+                "assetRole": "team.photo"
+              },
+              "name": {
+                "type": "string",
+                "maxWords": 4
+              },
+              "role": {
+                "type": "string",
+                "maxWords": 6
+              },
+              "linkedinUrl": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        },
+        "groupPhoto": {
+          "type": "object",
+          "required": true,
+          "assetRole": "team.photo"
+        }
+      },
+      "contentIntegrity": {
+        "status": "real-people",
+        "note": "Portraits and the group photograph are real employee photos of a real company. A generator MUST reuse the exact existing assets and MUST NOT fabricate new team members, names, or photos.",
+        "citedIn": "src/content/team.js, src/pages/About.jsx"
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/About.jsx, src/content/team.js"
+    },
+    "narrative.article-body": {
+      "category": "NARRATIVE",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "blogPostRouteOnly",
+      "content": {
+        "blocks": {
+          "type": "array",
+          "maxItems": 40,
+          "required": true,
+          "items": {
+            "type": "object",
+            "oneOf": [
+              {
+                "properties": {
+                  "type": {
+                    "const": "p"
+                  },
+                  "text": {
+                    "type": "string",
+                    "maxWords": 120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "h2"
+                  },
+                  "text": {
+                    "type": "string",
+                    "maxWords": 12
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "quote"
+                  },
+                  "text": {
+                    "type": "string",
+                    "maxWords": 40
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "figure"
+                  },
+                  "src": {
+                    "assetRole": "blog.inline-figure"
+                  },
+                  "alt": {
+                    "type": "string",
+                    "maxWords": 20
+                  },
+                  "caption": {
+                    "type": "string",
+                    "maxWords": 24
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "contentIntegrity": {
+        "status": "placeholder",
+        "severity": "high",
+        "note": "All 7 real blog posts ship with body: [] in src/content/posts.js — an intentional empty stub, not a bug. src/pages/BlogPost.jsx renders a literal placeholder message (\"This article’s body has not been added yet...\") whenever blocks.length === 0. A generated PageSpec MAY populate blocks with new, clearly-authored prose, but MUST NOT present generated text as if it were transcribed from the real orchestra.bio article — the real article text was never extracted (README.md:78-79) and must not be fabricated as if it had been.",
+        "citedIn": "src/content/posts.js, src/pages/BlogPost.jsx:74-82, README.md:62-79"
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/BlogPost.jsx"
+    },
+    "collection.post-grid": {
+      "category": "COLLECTION",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "blogIndexRouteOnly",
+      "content": {
+        "posts": {
+          "type": "array",
+          "maxItems": 6,
+          "required": true,
+          "note": "Excludes whichever post is used by hero.blog-featured on the same page.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cover": {
+                "type": "object",
+                "assetRole": "blog.cover"
+              },
+              "title": {
+                "type": "string",
+                "maxWords": 14
+              },
+              "linkLabel": {
+                "type": "string",
+                "maxWords": 3,
+                "enum": [
+                  "Learn more"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [
+          "reveal"
+        ],
+        "reducedMotionFallback": "fully visible, no transition"
+      },
+      "measuredFrom": "src/pages/BlogIndex.jsx, src/content/posts.js"
+    },
+    "collection.related-posts": {
+      "category": "COLLECTION",
+      "onePerPage": true,
+      "repeatable": false,
+      "exactCountPerPage": 1,
+      "routeRestriction": "blogPostRouteOnly",
+      "content": {
+        "relatedPosts": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "cover": {
+                "type": "object",
+                "assetRole": "blog.cover"
+              },
+              "title": {
+                "type": "string",
+                "maxWords": 14
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [
+          "imageHover"
+        ],
+        "reducedMotionFallback": "no hover scale transform"
+      },
+      "measuredFrom": "src/pages/BlogPost.jsx"
+    },
+    "collection.home-updates": {
+      "category": "COLLECTION",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "homeRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 3,
+          "enum": [
+            "Latest updates"
+          ],
+          "required": true
+        },
+        "posts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "cover": {
+                "type": "object",
+                "assetRole": "blog.cover-narrow"
+              },
+              "title": {
+                "type": "string",
+                "maxWords": 14
+              }
+            }
+          }
+        }
+      },
+      "contentIntegrity": {
+        "status": "editorial-selection",
+        "note": "Which three posts appear is an explicit FEATURED_SLUGS editorial list (posts 1, 2 and 4 of the 7 real posts), not a slice of the array. Reordering src/content/posts.js must not silently change which posts render here — enforced today by DRIFT-01 guard in schema/validate-design-repo.mjs.",
+        "citedIn": "src/components/Updates.jsx, design-repo/README.md \"Known issues\""
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/components/Updates.jsx"
+    },
+    "conversion.contact-form": {
+      "category": "CONVERSION",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "contactRouteOnly",
+      "content": {
+        "fields": {
+          "type": "array",
+          "required": true,
+          "minItems": 4,
+          "maxItems": 4,
+          "note": "Closed field set: name, email, phone, notes — see enum on each item’s \"name\".",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "email",
+                  "phone",
+                  "notes"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "maxWords": 6
+              },
+              "required": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "submitLabel": {
+          "type": "string",
+          "maxWords": 2,
+          "enum": [
+            "Submit"
+          ],
+          "required": true
+        }
+      },
+      "contentIntegrity": {
+        "status": "no-backend",
+        "note": "Posts nowhere — onSubmit sets local React state and shows a confirmation message. The original’s ~11 zero-size hidden honeypot inputs are not reproduced, since they only function paired with server-side filtering this clone does not have.",
+        "citedIn": "src/pages/Contact.jsx:12-16, README.md:81-86"
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/Contact.jsx"
+    },
+    "conversion.hiring": {
+      "category": "CONVERSION",
+      "onePerPage": true,
+      "repeatable": false,
+      "routeRestriction": "aboutRouteOnly",
+      "content": {
+        "heading": {
+          "type": "string",
+          "maxWords": 3,
+          "enum": [
+            "We're hiring!"
+          ],
+          "required": true
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "required": true,
+          "items": {
+            "type": "string",
+            "maxWords": 50
+          }
+        },
+        "cta": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxWords": 4
+            },
+            "target": {
+              "type": "string",
+              "format": "uri",
+              "note": "External — the Ashby job board, not an internal route."
+            }
+          }
+        }
+      },
+      "motion": {
+        "allowed": [],
+        "reducedMotionFallback": "n/a — no motion measured"
+      },
+      "measuredFrom": "src/pages/About.jsx"
+    }
+  }
+}

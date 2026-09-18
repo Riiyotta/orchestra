@@ -112,5 +112,5 @@ pixel-exact, including the video inset inside the product frame.
 - **Scroll reveal** — the original drives motion through Framer's JS runtime
   with no CSS transitions to read. `.reveal` is an IntersectionObserver
   equivalent, not a measured copy.
-- Routes other than `/` are not built; nav and footer links point at the live
-  site's paths.
+- All 7 routes above are built (see "Routes" earlier in this file) and nav/
+  footer links point at this app's own routes, not the live site's paths.

@@ -1,0 +1,101 @@
+{
+  "$comment": "Permitted section ordering/composition rules for the 7 real templates, derived directly from templates/templates.json's actual node sequences (in turn generated from the root ia.json) — not invented. Every rule carries a severity. schema/semantic_validate.mjs enforces these same rules against a PageSpec instance; whenever a rule's prose here changes, the matching enforcement code must change too (MASTER-GUIDE 3.8).",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "ONE_HERO_PER_PAGE",
+      "severity": "error",
+      "description": "Exactly one HERO-category section per page, and it must be the first node after chrome.navbar.",
+      "exception": "None — every one of the 7 real templates has exactly one hero (hero.home, hero.product, hero.about, hero.contact, hero.blog-featured, hero.post, hero.not-found), each scoped to exactly one template by routeRestriction. There is no hero-less template in this repo.",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "SHELL_MUST_WRAP_PAGE",
+      "severity": "error",
+      "description": "chrome.navbar must be the first node and chrome.footer must be the last node of every page, with no exceptions — Layout in src/App.jsx renders both around every route including the catch-all.",
+      "exception": "None.",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "CTA_BAND_IMMEDIATELY_PRECEDES_FOOTER",
+      "severity": "error",
+      "description": "conversion.cta-band IS a real node in every template's sections array (templates/templates.json) and MUST appear in a PageSpec's nodes[] — positioned as the second-to-last node, immediately before chrome.footer, on every template with no exceptions. This is a positional/ordering rule, distinct from the source-code-level rendering detail below.",
+      "sourceLevelDetail": "At the React component level (not the PageSpec level), conversion.cta-band's real implementation (src/components/CTA.jsx) is rendered as Footer.jsx's first child, not imported/rendered by any page component — schema/validate-design-repo.mjs check #7 enforces that against real source. A PageSpec does not need to know or express this implementation detail; it only needs to place the conversion.cta-band node correctly in nodes[], which schema/semantic_validate.mjs checks via TEMPLATE_NODE_SEQUENCE_MATCH.",
+      "exception": "None — all 7 real templates place conversion.cta-band immediately before chrome.footer.",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "SHOWCASE_TIMELINE_FOLLOWS_HOME_HERO",
+      "severity": "error",
+      "description": "showcase.hero-timeline may only appear directly after hero.home.",
+      "exception": "None — this section is homeRouteOnly and only template.home's node sequence contains it, immediately after hero.home.",
+      "appliesTo": ["template.home"]
+    },
+    {
+      "id": "NO_CONSECUTIVE_SAME_SECTION",
+      "severity": "error",
+      "description": "The same section id must not appear twice in direct sequence in nodes[].",
+      "exception": "None currently — no real template repeats a section id back-to-back. narrative.product-feature repeats 3 times non-consecutively-by-identity but each instance is a distinct (section, index) pair, not an identical duplicate node — see STRUCTURAL_KEY_INCLUDES_VARIANT below.",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "STRUCTURAL_KEY_INCLUDES_VARIANT",
+      "severity": "warn",
+      "description": "Structural uniqueness checks (e.g. duplicate-node detection) must key on (section, index) or (section, variant), not bare section id, for any section marked repeatable:true in tokens/llm/component-allowlist.json — narrative.product-feature legitimately appears 3 times on every product-detail page, each with a distinct index (1..3) and distinct content.",
+      "exception": "narrative.product-feature (exactCountPerPage: 3, distinct index 1-3 required).",
+      "appliesTo": ["template.product-detail"]
+    },
+    {
+      "id": "PRODUCT_FEATURE_EXACT_COUNT",
+      "severity": "error",
+      "description": "template.product-detail must contain exactly 3 narrative.product-feature nodes, each with a distinct index (1, 2, 3) covering the full range with no gaps or repeats.",
+      "exception": "None — all 3 real product routes (unified-planning, intelligent-operations, decision-support) render exactly 3 features from src/content/products.js's features array.",
+      "appliesTo": ["template.product-detail"]
+    },
+    {
+      "id": "RELATED_POSTS_EXACT_COUNT",
+      "severity": "error",
+      "description": "collection.related-posts must carry exactly 2 relatedPosts entries.",
+      "exception": "None — src/pages/BlogPost.jsx always slices exactly 2 (POSTS.filter(...).slice(0,2)).",
+      "appliesTo": ["template.blog-post"]
+    },
+    {
+      "id": "HOME_UPDATES_EXACT_COUNT",
+      "severity": "error",
+      "description": "collection.home-updates must carry exactly 3 posts, and they must be the editorially-selected FEATURED_SLUGS set (posts 1, 2, 4 of the 7 real posts), not an arbitrary slice.",
+      "exception": "A generated PageSpec targeting a hypothetical NEW post inventory (not the 7 real posts) may choose a different 3-post editorial set, but must still declare it explicitly as a fixed list, never as \"first 3\" — this is the same guard as DRIFT-01 in schema/validate-design-repo.mjs, ported to the PageSpec layer as a rule about explicitness, not about the specific 7 slugs.",
+      "appliesTo": ["template.home"]
+    },
+    {
+      "id": "TEMPLATE_NODE_SEQUENCE_MATCH",
+      "severity": "error",
+      "description": "A PageSpec's basedOnTemplate field and its own nodes[] sequence must agree: nodes[] (by section id, ignoring per-instance content) must equal that template's real sections array in templates/templates.json, in the same order, with the same required/repeatable node counts. This is the single most-repeated bug class across prior design-repo builds (MASTER-GUIDE 3.3) — it is enforced in schema/semantic_validate.mjs, not left to the JSON Schema layer, since it requires cross-referencing two files.",
+      "exception": "None.",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "ROUTE_RESTRICTED_SECTIONS_MATCH_TEMPLATE",
+      "severity": "error",
+      "description": "A section whose content-contracts.json entry declares a routeRestriction (e.g. homeRouteOnly, productDetailRouteOnly) must only be used inside a PageSpec whose basedOnTemplate matches that restriction's template.",
+      "exception": "None — every HERO/SHOWCASE/most NARRATIVE/COLLECTION sections in this repo are single-template by construction (see sections/content-contracts.json).",
+      "appliesTo": "all templates"
+    },
+    {
+      "id": "ARTICLE_BODY_PLACEHOLDER_ALLOWED",
+      "severity": "warn",
+      "description": "narrative.article-body's blocks[] array may legitimately be empty ([]) — this renders BlogPost.jsx's real placeholder message and is NOT a validation error, since the 7 real posts all ship this way today. A non-empty blocks[] is preferred but not required.",
+      "exception": "n/a — this is a warn-only acknowledgement of real, intentional current content state (see registry.manifest.json knownGaps: blog-body-placeholder).",
+      "appliesTo": ["template.blog-post"]
+    }
+  ],
+  "templateNodeCounts": {
+    "note": "Recomputed from templates/templates.json by schema/semantic_validate.mjs and extraction/verify_all.mjs — listed here for human reference only, not itself authoritative.",
+    "template.home": 9,
+    "template.product-detail": 5,
+    "template.about": 8,
+    "template.contact": 5,
+    "template.blog-index": 5,
+    "template.blog-post": 6,
+    "template.not-found": 4
+  }
+}

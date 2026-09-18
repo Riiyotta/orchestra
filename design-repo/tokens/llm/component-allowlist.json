@@ -1,0 +1,228 @@
+{
+  "$comment": "Closed set of section ids an AI-driven generator may instantiate in a PageSpec node. Derived 1:1 from sections/content-contracts.json — every id here has a matching contract, and every contract has an entry here (checked by extraction/verify_all.mjs).",
+  "version": "1.0.0",
+  "sections": {
+    "chrome.navbar": {
+      "category": "CHROME",
+      "settableProperties": [],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "chrome.footer": {
+      "category": "CHROME",
+      "settableProperties": [],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "conversion.cta-band": {
+      "category": "CONVERSION",
+      "settableProperties": [
+        "eyebrow",
+        "headline",
+        "subhead",
+        "cta",
+        "backgroundImage"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.home": {
+      "category": "HERO",
+      "settableProperties": [
+        "headline",
+        "subhead",
+        "cta"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.product": {
+      "category": "HERO",
+      "settableProperties": [
+        "eyebrow",
+        "title",
+        "subhead",
+        "cta"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.about": {
+      "category": "HERO",
+      "settableProperties": [
+        "eyebrow",
+        "missionStatement",
+        "cta"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.contact": {
+      "category": "HERO",
+      "settableProperties": [
+        "heading",
+        "intro",
+        "image"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.blog-featured": {
+      "category": "HERO",
+      "settableProperties": [
+        "title",
+        "excerpt",
+        "cover",
+        "linkLabel"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.post": {
+      "category": "HERO",
+      "settableProperties": [
+        "readTime",
+        "title",
+        "excerpt",
+        "cover"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "hero.not-found": {
+      "category": "HERO",
+      "settableProperties": [
+        "eyebrow",
+        "headline",
+        "linkLabel"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "showcase.hero-timeline": {
+      "category": "SHOWCASE",
+      "settableProperties": [
+        "statusChips"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "showcase.product-frame": {
+      "category": "SHOWCASE",
+      "settableProperties": [
+        "screenshot",
+        "video"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "showcase.system-video": {
+      "category": "SHOWCASE",
+      "settableProperties": [
+        "heading",
+        "video"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "narrative.pillar-accordion": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "heading",
+        "tabs"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "narrative.product-feature": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "index",
+        "heading",
+        "copy",
+        "image"
+      ],
+      "repeatable": true,
+      "onePerPage": false
+    },
+    "narrative.approach": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "heading",
+        "body"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "narrative.intelligence-arc": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "leadIn",
+        "stages"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "narrative.team": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "members",
+        "groupPhoto"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "narrative.article-body": {
+      "category": "NARRATIVE",
+      "settableProperties": [
+        "blocks"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "collection.post-grid": {
+      "category": "COLLECTION",
+      "settableProperties": [
+        "posts"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "collection.related-posts": {
+      "category": "COLLECTION",
+      "settableProperties": [
+        "relatedPosts"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "collection.home-updates": {
+      "category": "COLLECTION",
+      "settableProperties": [
+        "heading",
+        "posts"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "conversion.contact-form": {
+      "category": "CONVERSION",
+      "settableProperties": [
+        "fields",
+        "submitLabel"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    },
+    "conversion.hiring": {
+      "category": "CONVERSION",
+      "settableProperties": [
+        "heading",
+        "paragraphs",
+        "cta"
+      ],
+      "repeatable": false,
+      "onePerPage": true
+    }
+  }
+}

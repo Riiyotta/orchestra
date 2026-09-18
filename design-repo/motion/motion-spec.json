@@ -1,0 +1,77 @@
+{
+  "$comment": "Canonical motion spec for AI page generation, grounded in real CSS/JS in src/ — not invented timings. Closed to the real, evidence-grounded set of fields actually in use (MASTER-GUIDE 3.7); a PageSpec motion object with additionalProperties beyond these must be rejected by schema/pagespec.schema.json and schema/semantic_validate.mjs.",
+  "version": "1.0.0",
+  "patterns": {
+    "reveal": {
+      "description": "Scroll-triggered fade+rise applied via a shared `.reveal` class and one IntersectionObserver instance per route, not per-element measured CSS transitions.",
+      "evidenceLevel": "measured-behavior, approximated-trigger",
+      "evidenceNote": "The original drives this motion through Framer's JS runtime with no CSS transitions to read (README.md 'Known interpretations'). This clone's `.reveal` implementation is an IntersectionObserver equivalent that reproduces the visible effect, not a byte-for-byte copy of the original's internal motion engine. Do not claim more precision than this — the duration/easing/distance values below are this clone's own real, shipped CSS values (src/index.css), not measured off the live Framer site.",
+      "implementation": {
+        "cssClass": ".reveal",
+        "duration": "0.7s",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "distance": "24px",
+        "properties": ["opacity", "transform"],
+        "trigger": "IntersectionObserver(threshold: 0.15, rootMargin: '0px 0px -10% 0px')",
+        "triggerBehavior": "fires once per element (observer.unobserve after intersect), re-queries all `.reveal` targets on every route change (src/App.jsx Layout)"
+      },
+      "reducedMotionFallback": "Element renders fully visible with no opacity/transform transition — .reveal.is-visible's end state applied immediately.",
+      "measuredFrom": "src/index.css, src/App.jsx:18-33"
+    },
+    "marquee": {
+      "description": "Infinite horizontal looping strip built from a duplicated-and-doubled track.",
+      "evidenceLevel": "measured",
+      "implementation": {
+        "cssClass": ".marquee-track",
+        "duration": "40s",
+        "easing": "linear",
+        "iteration": "infinite",
+        "technique": "Track holds two identical halves; translateX(-50%) lands exactly on the seam so the loop is invisible.",
+        "pauseOnHover": true
+      },
+      "reducedMotionFallback": "animation: none — track renders statically at its resting position.",
+      "measuredFrom": "src/index.css, design-repo/primitives/primitives.json#marquee-track"
+    },
+    "autoAdvanceCrossfade": {
+      "description": "Auto-advancing two-tab accordion whose active tab cross-fades the paired screenshot stack.",
+      "evidenceLevel": "measured-structure, timing-not-independently-verified",
+      "evidenceNote": "Structural behavior (fixed 1048px clipped band, two tabs, auto-advance, cross-fade) is confirmed against src/components/Pillars.jsx. This spec does not assert a specific auto-advance interval or cross-fade duration as a separately measured foundation token — Pillars.jsx is the sole implementation and source of truth for those exact values; a generator should treat the component's own internal timing as authoritative rather than expecting a named token here.",
+      "reducedMotionFallback": "First tab shown statically; no auto-advance timer runs; no cross-fade transition on manual tab selection.",
+      "measuredFrom": "src/components/Pillars.jsx"
+    },
+    "viewportGatedPlayback": {
+      "description": "Video plays only while its containing frame is on screen; pauses when scrolled out of view.",
+      "evidenceLevel": "measured",
+      "implementation": {
+        "hook": "useViewportVideo(autoplay)",
+        "exportedFrom": "src/components/Showcase.jsx",
+        "consumedBy": ["Showcase.jsx", "SystemBand.jsx"]
+      },
+      "reducedMotionFallback": "Video does not autoplay; the screenshot/poster frame is shown in its place.",
+      "measuredFrom": "src/components/Showcase.jsx, src/components/SystemBand.jsx"
+    },
+    "loop": {
+      "description": "Simple infinite video loop with no viewport gating beyond what viewportGatedPlayback already covers for the same element.",
+      "evidenceLevel": "measured",
+      "reducedMotionFallback": "Video loops without an explicit pause control; if the browser itself suppresses autoplay under reduced-motion, the poster frame is shown.",
+      "measuredFrom": "src/components/SystemBand.jsx"
+    },
+    "buttonPress": {
+      "description": "Pill button press feedback.",
+      "evidenceLevel": "measured",
+      "implementation": { "duration": "150ms", "easing": "ease-out", "transform": "scale(0.98)" },
+      "reducedMotionFallback": "No scale transform on press; button still responds to click/tap.",
+      "measuredFrom": "src/index.css (.btn active:scale-[0.98])"
+    },
+    "imageHover": {
+      "description": "Hover scale on related-post thumbnails.",
+      "evidenceLevel": "measured",
+      "implementation": { "duration": "500ms", "easing": "ease-out", "transform": "scale(1.03)" },
+      "reducedMotionFallback": "No hover scale transform.",
+      "measuredFrom": "src/pages/BlogPost.jsx (group-hover:scale-[1.03])"
+    }
+  },
+  "globalReducedMotionRule": "All marquee + reveal motion is disabled under prefers-reduced-motion: reduce (tokens/tokens.json#motion.reducedMotion). Every pattern above states its own specific fallback; none may omit reducedMotionFallback in a generated PageSpec node.",
+  "closedFieldSet": ["reveal", "marquee", "autoAdvanceCrossfade", "viewportGatedPlayback", "loop", "buttonPress", "imageHover"],
+  "closedFieldSetNote": "schema/pagespec.schema.json's motion.allowed items enum is locked to exactly this list — an invented pattern name (e.g. 'parallax', 'typewriter') must be rejected, since nothing in src/ implements it."
+}

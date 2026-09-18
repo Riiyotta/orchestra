@@ -1,0 +1,64 @@
+{
+  "$comment": "Curated view of tokens/tokens.json for AI page generation — what a generator may REFERENCE by name. Not the whole token system; component-scoped overrides and raw Tailwind config stay out of this file. Every value here is a semantic alias resolving to a real foundation value verified against tailwind.config.js / src/index.css by schema/validate-design-repo.mjs.",
+  "version": "1.0.0",
+  "resolutionOrder": ["foundation", "theme", "semantic-alias", "component-token", "permitted-local-override"],
+  "resolutionOrderNote": "This site has one theme (light) — theme-mode overrides are a no-op step here, kept in the order for consistency with the workspace convention. Never resolve a semantic alias before the theme step, even when there is only one theme, since a second theme could be added later without reordering.",
+  "colorRoles": {
+    "surface.ink": { "token": "color.ink", "value": "#032126", "usage": "Primary dark surface: hero, navbar, footer, updates band." },
+    "surface.ink.raised": { "token": "color.ink-2", "value": "#24474D", "usage": "Raised surface on ink (image placeholder wells)." },
+    "border.ink": { "token": "color.ink-3", "value": "#375257", "usage": "Hairline/border on ink." },
+    "surface.paper": { "token": "color.paper", "value": "#E8ECE9", "usage": "Default page background." },
+    "surface.paper.recessed": { "token": "color.paper-2", "value": "#D9E1DC", "usage": "Recessed paper surface (video well)." },
+    "text.display.muted-on-ink": { "token": "color.paper-3", "value": "#D0DDD5", "usage": "Muted display type on ink (hero second line)." },
+    "text.display.on-ink": { "token": "color.cream", "value": "#F6F4F3", "usage": "Light-on-dark display type; light pill fill." },
+    "accent.secondary": { "token": "color.sage", "value": "#5B9383", "usage": "Secondary accent." },
+    "accent.secondary.deep": { "token": "color.sage-deep", "value": "#365E55", "usage": "Secondary accent, pressed/deep." },
+    "action.primary": { "token": "color.mint", "value": "#A7D5B8", "usage": "Primary action fill; selection background." },
+    "text.eyebrow.on-ink": { "token": "color.mint-soft", "value": "#9DBDAB", "usage": "Eyebrow + section heading on ink." },
+    "text.subhead.on-ink": { "token": "color.mint-pale", "value": "#B8CDC1", "usage": "Subhead body copy on ink." },
+    "text.tertiary": { "token": "color.muted", "value": "#768787", "usage": "Tertiary body copy on paper." },
+    "accent.timeline.blue": { "token": "color.blue", "value": "#9CB6E0", "usage": "Timeline lane accent." },
+    "accent.timeline.blue-deep": { "token": "color.blue-deep", "value": "#264881", "usage": "Timeline lane accent, deep." },
+    "accent.timeline.blue-pale": { "token": "color.blue-pale", "value": "#CED9EB", "usage": "Timeline lane accent, pale." },
+    "accent.timeline.rose": { "token": "color.rose", "value": "#CE9599", "usage": "Timeline lane accent." },
+    "accent.timeline.rose-pale": { "token": "color.rose-pale", "value": "#D3BBBB", "usage": "Timeline lane accent, pale." },
+    "accent.timeline.clay": { "token": "color.clay", "value": "#E28468", "usage": "Timeline lane accent, warm." },
+    "accent.timeline.clay-deep": { "token": "color.clay-deep", "value": "#5E3120", "usage": "Timeline lane accent, warm deep." }
+  },
+  "typeRoles": {
+    "display.xl": { "token": "fontSize.display-xl", "size": "76px", "usage": "Hero + CTA headline." },
+    "display.lg": { "token": "fontSize.display-lg", "size": "56px", "usage": "Product hero title; pillar heading." },
+    "display.md": { "token": "fontSize.display-md", "size": "48px", "usage": "Section headings." },
+    "body.lg": { "token": "fontSize.body-lg", "size": "20px", "usage": "Article pull quotes." },
+    "body.md": { "token": "fontSize.body-md", "size": "18px", "usage": "Subheads." },
+    "body.sm": { "token": "fontSize.body-sm", "size": "16px", "usage": "Default body copy." },
+    "body.xs": { "token": "fontSize.body-xs", "size": "14px", "usage": "Captions." },
+    "label": { "token": "fontSize.label", "size": "15px", "usage": "Field labels, read-time line." },
+    "eyebrow": { "token": "fontSize.eyebrow", "size": "13px", "usage": "Mono, uppercase kicker." },
+    "fontFamily.display": { "token": "font.display", "value": ["'General Sans'", "Inter", "system-ui", "sans-serif"], "substituteFor": "Greed Standard (Displaay), commercially licensed — not shippable in this open rebuild." },
+    "fontFamily.body": { "token": "font.body", "value": ["'Source Serif 4'", "Georgia", "serif"], "substituteFor": "Tiempos Text (Klim), commercially licensed — not shippable in this open rebuild." },
+    "fontFamily.mono": { "token": "font.mono", "value": ["'IBM Plex Mono'", "ui-monospace", "monospace"], "usage": "Eyebrows only." }
+  },
+  "layoutRoles": {
+    "container.shell": { "token": "layout.shell", "value": "1216px", "usage": "Wraps the content column of nearly every section." },
+    "container.inner": { "token": "layout.inner", "value": "1120px" },
+    "measure.hero": { "token": "layout.measure", "value": "700px", "usage": "Hero/CTA headline + subhead column." },
+    "measure.article": { "token": "layout.article", "value": "800px", "usage": "Blog post body measure." },
+    "navbar.height": { "token": "layout.navbarHeight", "value": "88px" }
+  },
+  "radiusRoles": {
+    "radius.pill": { "token": "radius.pill", "value": "9999px", "usage": "All CTAs." },
+    "radius.card": { "token": "radius.card", "value": "0.75rem", "usage": "Post cover images." }
+  },
+  "motionRoles": {
+    "note": "See motion/motion-spec.json for the full, closed motion contract. This catalog only lists the named tokens a PageSpec may reference by id.",
+    "motion.reveal": { "token": "motion.reveal" },
+    "motion.marquee": { "token": "motion.marquee" },
+    "motion.buttonPress": { "token": "motion.buttonPress" },
+    "motion.imageHover": { "token": "motion.imageHover" }
+  },
+  "excludedFromCatalog": [
+    "Raw Tailwind class names (e.g. 'bg-ink', 'text-mint-soft') — a generator references the semantic role id above, never a Tailwind utility class directly.",
+    "Component-scoped one-off overrides not promoted to a semantic role (none currently exist in tokens/tokens.json; components/components.json's per-component notes, e.g. SystemBand's pinned 104px heading box, are implementation detail, not a generation-time token)."
+  ]
+}

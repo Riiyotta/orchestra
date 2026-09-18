@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://orchestra.design-repo/pagespec.schema.json",
+  "title": "Orchestra PageSpec",
+  "description": "Machine contract for an AI-generated page composition against this design-repo. Distinct from and additive to schema/schema.json, which validates this design-repo's OWN internal shape (tokens/primitives/components/sections/templates), not a generated page. A PageSpec instance validating here with zero errors is necessary but not sufficient — schema/semantic_validate.mjs enforces the cross-file rules JSON Schema structurally cannot express (template/node-sequence agreement, per-section content contracts in sections/content-contracts.json, compatibility/graph.json rhythm rules, and per-instance maxWords word counts).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repositoryId", "pageSpecVersion", "basedOnTemplate", "route", "theme", "nodes"],
+  "properties": {
+    "repositoryId": { "const": "orchestra-design-repo" },
+    "pageSpecVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "basedOnTemplate": {
+      "type": "string",
+      "enum": [
+        "template.home",
+        "template.product-detail",
+        "template.about",
+        "template.contact",
+        "template.blog-index",
+        "template.blog-post",
+        "template.not-found"
+      ],
+      "description": "Must be one of the 7 real templates in templates/templates.json. semantic_validate.mjs cross-references this field against that template's own node list — nodes[] alone is not enough (MASTER-GUIDE 3.3)."
+    },
+    "route": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Either a real route from ia.json or a new route matching basedOnTemplate's routePattern (e.g. '/product/new-slug' for template.product-detail)."
+    },
+    "theme": { "const": "light", "description": "Only theme instance this repo declares — see registry.manifest.json#theme." },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/node" }
+    }
+  },
+  "definitions": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section", "required", "repeatable", "motion", "content"],
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "chrome.navbar", "chrome.footer", "conversion.cta-band",
+            "hero.home", "hero.product", "hero.about", "hero.contact", "hero.blog-featured", "hero.post", "hero.not-found",
+            "showcase.hero-timeline", "showcase.product-frame", "showcase.system-video",
+            "narrative.pillar-accordion", "narrative.product-feature", "narrative.approach", "narrative.intelligence-arc", "narrative.team", "narrative.article-body",
+            "collection.post-grid", "collection.related-posts", "collection.home-updates",
+            "conversion.contact-form", "conversion.hiring"
+          ],
+          "description": "Closed to the 24 real sections in sections/sections.json + tokens/llm/component-allowlist.json. No other id may be instantiated."
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Required only for repeatable sections with an exactCountPerPage in sections/content-contracts.json (currently narrative.product-feature, index 1-3). Omit for non-repeatable sections."
+        },
+        "required": { "type": "boolean" },
+        "repeatable": { "type": "boolean" },
+        "content": {
+          "type": "object",
+          "description": "Section-specific fields. This schema only requires the field to be an object; sections/content-contracts.json's per-section required/maxWords/enum rules are enforced by schema/semantic_validate.mjs, since JSON Schema's draft-07 additionalProperties:false on a shared base cannot see per-branch properties added by 24 independent variants without an enormous duplicated oneOf (MASTER-GUIDE / BUILD-GUIDE 2.5 known trap) — the semantic validator loads content-contracts.json directly and is the single source of truth for content shape, avoiding the two-authoritative-sources divergence risk that a duplicated oneOf here would create."
+        },
+        "motion": { "$ref": "#/definitions/motion" }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "reducedMotionFallback"],
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["reveal", "marquee", "autoAdvanceCrossfade", "viewportGatedPlayback", "loop", "buttonPress", "imageHover"]
+          },
+          "description": "Closed to motion/motion-spec.json's closedFieldSet. An empty array is valid for sections with no measured motion (e.g. hero.product, hero.about)."
+        },
+        "reducedMotionFallback": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Required on every node, including ones with allowed: [] — state explicitly what happens (or that nothing animates) under prefers-reduced-motion."
+        }
+      }
+    },
+    "assetRoleRef": {
+      "type": "string",
+      "enum": [
+        "photo.background", "photo.editorial", "product.screenshot", "product.demo-video",
+        "blog.cover", "blog.cover-narrow", "blog.inline-figure", "team.photo"
+      ],
+      "description": "Closed to assets/asset-roles.json's roles. Any media-bearing content field's assetRole must be one of these — never a bare string like 'image' or 'src'."
+    }
+  }
+}

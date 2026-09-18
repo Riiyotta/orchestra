@@ -1,0 +1,75 @@
+{
+  "repositoryId": "orchestra-design-repo",
+  "pageSpecVersion": "1.0.0",
+  "basedOnTemplate": "template.blog-post",
+  "route": "/blog/how-biotechs-can-manage-cros-with-agents",
+  "theme": "light",
+  "nodes": [
+    {
+      "section": "chrome.navbar",
+      "required": true,
+      "repeatable": false,
+      "content": {},
+      "motion": { "allowed": [], "reducedMotionFallback": "n/a — no motion on this section" }
+    },
+    {
+      "section": "hero.post",
+      "required": true,
+      "repeatable": false,
+      "content": {
+        "readTime": "5 min read",
+        "title": "How biotechs can manage CROs with agents",
+        "excerpt": "For two decades, biopharma software organized what scientists already knew. Agents change what the software can do on its own.",
+        "cover": { "assetRole": "blog.cover", "src": "https://framerusercontent.com/images/aBVvXpB0r2rfq6xa8aVntZF33c.png?scale-down-to=1024" }
+      },
+      "motion": { "allowed": [], "reducedMotionFallback": "n/a — no motion measured" }
+    },
+    {
+      "section": "narrative.article-body",
+      "required": true,
+      "repeatable": false,
+      "content": {
+        "blocks": []
+      },
+      "motion": { "allowed": [], "reducedMotionFallback": "n/a — no motion measured" }
+    },
+    {
+      "section": "collection.related-posts",
+      "required": true,
+      "repeatable": false,
+      "content": {
+        "relatedPosts": [
+          {
+            "cover": { "assetRole": "blog.cover", "src": "https://framerusercontent.com/images/77xOndwSYi2QRMgwkkstALd0Jhw.png?scale-down-to=1024" },
+            "title": "Agents for R&D: Science"
+          },
+          {
+            "cover": { "assetRole": "blog.cover", "src": "https://framerusercontent.com/images/xNahpPLKElwjD4oOGFyjLTXIgcc.png?scale-down-to=1024" },
+            "title": "Agents for R&D: Strategy"
+          }
+        ]
+      },
+      "motion": { "allowed": ["imageHover"], "reducedMotionFallback": "no hover scale transform" }
+    },
+    {
+      "section": "conversion.cta-band",
+      "required": true,
+      "repeatable": false,
+      "content": {
+        "eyebrow": "Get started today",
+        "headline": "Get started today",
+        "subhead": "See how Orchestra brings your programs into one operating system.",
+        "cta": { "label": "Book a demo", "target": "/contact" },
+        "backgroundImage": { "assetRole": "photo.background", "src": "https://framerusercontent.com/images/E6Gw45Xk2VqeMVk6aTxadLhT7t4.png" }
+      },
+      "motion": { "allowed": ["reveal"], "reducedMotionFallback": "fully visible, no transition" }
+    },
+    {
+      "section": "chrome.footer",
+      "required": true,
+      "repeatable": false,
+      "content": {},
+      "motion": { "allowed": [], "reducedMotionFallback": "n/a — no motion on this section" }
+    }
+  ]
+}
